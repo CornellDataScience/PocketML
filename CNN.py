@@ -95,6 +95,22 @@ wandb.init(
 )
 '''
 
+def getAccuracy():
+    correct = 0
+    total = 0
+
+    with torch.no_grad():
+        for data in model.test_loader:
+            images, labels = data
+            outputs = model(images)
+            _, predicted = torch.max(outputs.data, 1)
+            total += labels.size(0)
+            correct += (predicted == labels).sum().item()
+
+            # wandb.log({"acc": correct/total})
+
+    return correct / total
+
 # Instantiate Model, Loss Function, and Optimizer
 
 model = CIFAR()
@@ -104,7 +120,9 @@ optimizer = optim.Adam(model.parameters(), lr=0.001)
 
 # Train Model
 
-for epoch in range(1):
+for epoch in range(3):
+    correct = 0
+
     running_loss = 0.0
     for i, data in enumerate(model.train_loader, 0):
         inputs, labels = data
@@ -125,21 +143,8 @@ for epoch in range(1):
             print(f'[{epoch + 1}, {i + 1}]: loss: {running_loss / 200}')
             running_loss = 0.0
 
-# Test Model
-            
-correct = 0
-total = 0
+    # Test Model per Epoch
 
-with torch.no_grad():
-    for data in model.test_loader:
-        images, labels = data
-        outputs = model(images)
-        _, predicted = torch.max(outputs.data, 1)
-        total += labels.size(0)
-        correct += (predicted == labels).sum().item()
-
-        # wandb.log({"acc": correct/total})
-
-print(f'Accuracy: {(correct/total) * 100}%')
+    print(f'[{epoch + 1}]: accuracy: {getAccuracy() * 100}%')
 
 # wandb.finish()
