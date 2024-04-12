@@ -63,7 +63,6 @@ struct ScriptsView: View {
                 }
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(Color(red:0.984313725490196, green: 0.9411764705882353, blue:1.0))
         }
     }
 }

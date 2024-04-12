@@ -24,3 +24,11 @@ struct ScriptGroup : Identifiable {
     let groupName : String
     var scripts : [Script]
 }
+
+struct ClusterData: Identifiable {
+    var id = UUID()
+    var name: String = ""
+    var port: String = ""
+    var publicKey: String = ""
+}
+
