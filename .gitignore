@@ -120,7 +120,7 @@ celerybeat.pid
 *.sage.py
 
 # Environments
-.env
+PocketML-backend/.env
 .venv
 env/
 venv/
