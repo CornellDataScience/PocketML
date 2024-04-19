@@ -1,0 +1,20 @@
+{
+	"length": 1,
+	"jobs": {
+		"abc_id": {
+			"name": "job1",
+			"active": false,
+			"description": "a soulless job"
+		},
+        "cde_id": {
+			"name": "job2",
+			"active": true,
+			"description": "a killer job"
+		},
+        "efg_id": {
+			"name": "job3",
+			"active": true,
+			"description": "a hell of a job"
+		}
+	}
+}
