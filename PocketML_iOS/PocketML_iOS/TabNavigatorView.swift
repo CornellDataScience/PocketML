@@ -28,7 +28,7 @@ struct TabNavigatorView: View {
                         Label("Scripts", systemImage: "square.and.pencil")
                     }
             }
-            .accentColor(Color(red:0.32941176470588235, green:0.16470588235294117, blue:0.4588235294117647))
+            .accentColor(Color.main)
         }.navigationBarBackButtonHidden(true)
     }
         
