@@ -71,15 +71,6 @@ struct UserLoginView: View {
         .navigationBarBackButtonHidden(true)
     }
    
-// create variables for small views to clean up main code??
-    
-//    private var viewAlbumsButton: some View {
-//        Text("My List")
-//            .foregroundStyle(Color(red:0.84705882352, green: 0.74901960784, blue:0.84705882352))
-//            .padding(EdgeInsets(top:10,leading:20, bottom:10, trailing: 20 ))
-//            .background(Color(red: 0.09803921568, green: 0.09803921568, blue: 0.43921568627))
-//            .clipShape(RoundedRectangle(cornerRadius: 15))
-//    }
 }
 
 #Preview {

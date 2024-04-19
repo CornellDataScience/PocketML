@@ -31,17 +31,22 @@ struct ClustersView: View {
                     ForEach(runningClusters) { cluster in
                         Text("\(cluster.name), port \(cluster.port)")
                             .listRowBackground(ListBackground())
+                            .monospaced()
+                            .foregroundStyle(Color(red: 0.32941176470588235, green:0.16470588235294117, blue:0.4588235294117647))
                     }
                 }
                 Section(header: Text("Cold")) {
                     ForEach(coldClusters) { cluster in
                         Text("\(cluster.name), port \(cluster.port)")
                             .listRowBackground(ListBackground())
+                            .monospaced()
+                            .foregroundStyle(Color(red: 0.32941176470588235, green:0.16470588235294117, blue:0.4588235294117647))
                     }
                 }
             }
         }
         .padding()
+        .background(Color(red:0.984313725490196, green: 0.9411764705882353, blue:1.0))
         .popover(isPresented: $isPopoverPresented, content: {
             ClusterPopoverView(clusterData: $clusterData, isPopoverPresented: $isPopoverPresented, saveAction: {
                 if !clusterData.name.isEmpty && !clusterData.port.isEmpty && !clusterData.publicKey.isEmpty {

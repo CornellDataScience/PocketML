@@ -62,6 +62,7 @@ struct ScriptsView: View {
                     scriptGroups[0].scripts.append(Script(scriptTitle: "new example", modelType: "SVM", c: 10.0, kernel: "linear", maxiter: 1000))
                 }
             }
+            .background(Color(red:0.984313725490196, green: 0.9411764705882353, blue:1.0))
             .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
     }

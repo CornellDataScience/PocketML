@@ -8,6 +8,24 @@
 import Foundation
 import SwiftUI
 
+// Job Structures
+struct Job: Identifiable{
+    var id = UUID()
+    let jobTitle : String
+    let completedEpochs : Double
+    let totalEpochs : Double
+//    let milestones : [Milestone]
+    // TODO: let trainLoss : Double
+}
+
+struct Milestone : Identifiable {
+    var id = UUID()
+    let type : String
+    let targetValue : Double
+    let accomplished : Bool
+}
+
+// Script Structures
 struct Script: Identifiable {
     var id = UUID()
     let scriptTitle : String
@@ -25,6 +43,7 @@ struct ScriptGroup : Identifiable {
     var scripts : [Script]
 }
 
+// Cluster Structures
 struct ClusterData: Identifiable {
     var id = UUID()
     var name: String = ""
