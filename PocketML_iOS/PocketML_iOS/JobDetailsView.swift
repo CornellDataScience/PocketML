@@ -30,17 +30,16 @@ struct JobDetailsView: View {
                 }
             }
             ActionsWidget()
-            Divider().background(Color(red:0.984313725490196, green: 0.9411764705882353, blue:1.0))
-        }.frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color(red:0.984313725490196, green: 0.9411764705882353, blue:1.0))
+            Divider().background(Color.background)
+        }.modifier(MainVStackModifier())
     }
 }
 
 func JobTitle(_ text:String) -> some View {
     Text(text)
-        .foregroundStyle(Color(red:0.8862745098039215, green:0.8156862745098039, blue:0.9764705882352941))
+        .foregroundStyle(Color.background2)
         .padding(EdgeInsets(top:10,leading:100, bottom:10, trailing: 100 ))
-        .background(Color(red: 0.32941176470588235, green:0.16470588235294117, blue:0.4588235294117647))
+        .background(Color.main)
         .clipShape(RoundedRectangle(cornerRadius: 30))
         .padding(.top, 10)
         .monospaced()
@@ -50,31 +49,26 @@ func JobTitle(_ text:String) -> some View {
 
 func ScriptWidget(_ script: String) -> some View {
     ZStack {
-        RoundedRectangle(cornerRadius: 25)
-            .frame(width: 200, height: 100)
-            .foregroundStyle((Color(red:0.8862745098039215, green:0.8156862745098039, blue:0.9764705882352941)))
-            .padding()
         VStack{
             Text(script)
-                .bold()
-                .monospaced()
-                .foregroundStyle(Color(red: 0.32941176470588235, green:0.16470588235294117, blue:0.4588235294117647))
+                .modifier(TextModifier())
             Text("<description>")
-                .font(.subheadline)
-                .foregroundStyle(Color(red: 0.32941176470588235, green:0.16470588235294117, blue:0.4588235294117647))
+                .modifier(SubheadlineModifier())
         }
         .frame(width: 200, height: 100)
+        .background(RoundedRectangle(cornerRadius: 25)
+            .fill(Color.background2))
     }
 }
 
 func WandbWidget() -> some View {
     ZStack(alignment: .center, content: {
-        Rectangle()
-            .frame(width: 150, height: 50)
-            .foregroundStyle(Color(red: 0.32941176470588235, green:0.16470588235294117, blue:0.4588235294117647))
+
         Text("View on WandB >")
             .frame(width: 150, height: 50)
-            .foregroundStyle(Color(red:0.984313725490196, green: 0.9411764705882353, blue:1.0))
+            .foregroundStyle(Color.background)
+            .background(Rectangle()
+                .fill(Color.main))
     })
     .padding(.trailing)
 }
@@ -107,15 +101,13 @@ func GraphWidget(data: [CGFloat]) -> some View {
     Section() {
         VStack{
             Text("Training Loss")
-                .monospaced()
-                .font(.title3)
-                .bold()
-                .foregroundColor(Color(red:0.32941176470588235, green:0.16470588235294117, blue:0.4588235294117647))
+                .modifier(SectionTitleModifier())
             Graph(dataPoints: data)
         }
         .padding()
     }
-    .background(RoundedRectangle(cornerRadius: 10).fill(Color(red:0.8862745098039215, green:0.8156862745098039, blue:0.9764705882352941)))
+    .background(RoundedRectangle(cornerRadius: 10)
+        .fill(Color.background2))
     .scrollContentBackground(.hidden)
 }
 
@@ -137,16 +129,13 @@ func MilestonesWidget() -> some View {
     Section() {
         VStack{
             Text("Milestones")
-                .monospaced()
-                .font(.title3)
-                .bold()
-                .foregroundColor(Color(red:0.32941176470588235, green:0.16470588235294117, blue:0.4588235294117647))
+                .modifier(SectionTitleModifier())
             MilestoneTable()
         }
         .frame(width: 320)
         .padding()
     }
-    .background(RoundedRectangle(cornerRadius: 10).fill(Color(red:0.8862745098039215, green:0.8156862745098039, blue:0.9764705882352941)))
+    .background(RoundedRectangle(cornerRadius: 10).fill(Color.background2))
     .padding(.leading)
     .padding(.trailing)
     .scrollContentBackground(.hidden)
@@ -155,12 +144,13 @@ func MilestonesWidget() -> some View {
 
 func ActionButton(action:String) -> some View{
     ZStack{
-        RoundedRectangle(cornerRadius: 25)
-            .frame(width: 100, height: 50)
-            .foregroundStyle(Color(red:0.984313725490196, green: 0.9411764705882353, blue:1.0))
-            .padding()
+
         Text(action)
-            .foregroundColor(Color(red:0.32941176470588235, green:0.16470588235294117, blue:0.4588235294117647))
+            .foregroundColor(Color.main)
+            .frame(width: 100, height: 50)
+            .background(RoundedRectangle(cornerRadius: 25)
+                .fill(Color.background))
+            .padding()
     }
 }
 
@@ -168,11 +158,8 @@ func ActionsWidget() -> some View{
     Section(){
         VStack{
             Text("Actions")
-                .monospaced()
-                .font(.title)
-                .foregroundColor(Color(red:0.32941176470588235, green:0.16470588235294117, blue:0.4588235294117647))
-                .padding(.top)
-                .padding(.bottom, -10)
+                .modifier(TitleModifier())
+                .padding(.bottom, -25)
             HStack(spacing:1){
                 ActionButton(action:"Start")
                     .padding(.leading)
@@ -184,7 +171,7 @@ func ActionsWidget() -> some View{
 
         }
     }
-    .background(Color(red:0.8862745098039215, green:0.8156862745098039, blue:0.9764705882352941))
+    .background(Color.background2)
 }
 
 #Preview {

@@ -27,20 +27,14 @@ struct JobDashboardView: View {
         NavigationStack{
             VStack{
                 Text("Your Jobs")
-                    .font(.largeTitle)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.top)
-                    .padding(.leading)
-                    .monospaced()
-                    .foregroundStyle(Color(red:0.32941176470588235, green:0.16470588235294117, blue:0.4588235294117647))
+                    .modifier(MainTitleModifier())
                 Spacer()
                 JobListSection("Current Jobs", jobs: currentJobs)
                 JobListSection("Past Jobs", jobs: pastJobs)
-                Divider().background(Color(red:0.984313725490196, green: 0.9411764705882353, blue:1.0))
+                Divider().background(Color.background)
             
             }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(Color(red:0.984313725490196, green: 0.9411764705882353, blue:1.0))
+            .modifier(MainVStackModifier())
         }
     }
 }
@@ -53,30 +47,22 @@ func JobListSection(_ sectionTitle: String, jobs: [Job]) -> some View {
                 JobsList(jobsList: jobs)
             }
         }
-        .background(RoundedRectangle(cornerRadius: 10).fill(Color(red:0.8862745098039215, green:0.8156862745098039, blue:0.9764705882352941)))
-        .padding(.leading)
-        .padding(.trailing)
-        .scrollContentBackground(.hidden)
+        .modifier(ListVStackModifier())
     }
 }
 
 func JobSectionTitle(_ text: String) -> some View {
     Text(text)
-        .monospaced()
-        .padding(.top)
-        .padding(.bottom, -30)
-        .font(.title2)
+        .modifier(Title2Modifier())
         .bold()
-        .foregroundColor(Color(red:0.32941176470588235, green:0.16470588235294117, blue:0.4588235294117647))
+        .padding(.bottom,-40)
 }
 
 private func JobInfoRow(job : Job) -> some View {
     HStack{
         VStack(alignment:.leading){
             Text(job.jobTitle)
-                .monospaced()
-                .font(.title3)
-                .foregroundColor(Color(red:0.32941176470588235, green:0.16470588235294117, blue:0.4588235294117647))
+                .modifier(Title3Modifier())
             
             let compEpoch = String(format: "%.2f", job.completedEpochs)
             let totEpoch = String(format: "%.2f", job.totalEpochs)
@@ -84,16 +70,14 @@ private func JobInfoRow(job : Job) -> some View {
             ProgressView(value: job.completedEpochs, total: job.totalEpochs){
                 HStack{
                     Text("\(compEpoch) epochs \\ \(totEpoch)")
-                        .foregroundColor(Color(red:0.32941176470588235, green:0.16470588235294117, blue:0.4588235294117647))
-                        .font(.subheadline)
+                        .modifier(SubheadlineModifier())
                     Spacer()
                     Text("\(percent)%")
-                        .foregroundColor(Color(red:0.32941176470588235, green:0.16470588235294117, blue:0.4588235294117647))
-                        .font(.subheadline)
+                        .modifier(SubheadlineModifier())
                         .bold()
                 }
             }
-            .accentColor((Color(red:0.32941176470588235, green:0.16470588235294117, blue:0.4588235294117647)))
+            .accentColor(Color.main)
         }
     }
 }
@@ -109,7 +93,7 @@ private func JobsList(jobsList : [Job]) -> some View {
                 JobInfoRow(job:job)
             }
         }
-        .listRowBackground(Color(red:0.984313725490196, green: 0.9411764705882353, blue:1.0))
+        .listRowBackground(Color.background)
         .scrollContentBackground(.hidden)
         
     }

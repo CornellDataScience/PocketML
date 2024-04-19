@@ -47,7 +47,7 @@ struct ScriptGroup : Identifiable {
 struct ClusterData: Identifiable {
     var id = UUID()
     var name: String = ""
-    var port: String = ""
+    var port: Int = 0
     var publicKey: String = ""
 }
 
