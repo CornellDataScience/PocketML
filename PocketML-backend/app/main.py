@@ -2,8 +2,8 @@ from fastapi import FastAPI
 from fastapi import APIRouter
 from fastapi.routing import APIRoute
 
-from .routers import users
-from .config import settings
+from routers import users
+from config import settings
 
 api_router = APIRouter()
 api_router.include_router(users.router, prefix="/users", tags=["users"])
