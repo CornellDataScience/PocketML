@@ -7,9 +7,39 @@
 
 import SwiftUI
 
+@MainActor
+final class SignInEmailViewModel: ObservableObject{
+    @Published var email = ""
+    @Published var password = ""
+    
+    func signUp() async throws {
+        guard !email.isEmpty, !password.isEmpty else {
+            print("No email or password found")
+            return
+        }
+        try await AuthenticationManager.shared.createUser(email: email, password: password)
+        /*Task{
+            do {
+                let returnedUserData = try await AuthenticationManager.shared.createUser(email: email, password: password)
+                print("Success")
+                print(returnedUserData)
+            }
+            catch{
+                print("Error: \(error)")
+            }
+        }*/
+    }
+    func signIn() async throws {
+        guard !email.isEmpty, !password.isEmpty else {
+            print("No email or password found")
+            return
+        }
+        try await AuthenticationManager.shared.signInUser(email: email, password: password)
+    }
+}
+
 struct UserLoginView: View {
-    @State private var username: String = ""
-    @State private var password: String = ""
+    @StateObject private var viewModel = SignInEmailViewModel()
     
     var body: some View {
         NavigationView{
@@ -23,7 +53,7 @@ struct UserLoginView: View {
                     .padding(.top, -5)
                 
                 // username text field
-                TextField("Username", text: $username)
+                TextField("Username", text: $viewModel.email)
                     .padding(.horizontal)
                     .padding(.vertical, 8)
                     .background(
@@ -32,8 +62,9 @@ struct UserLoginView: View {
                     )
                     .padding(.leading)
                     .padding(.trailing)
+                
                 // password text field
-                TextField("Password", text: $password)
+                SecureField("Password", text: $viewModel.password)
                     .padding(.horizontal)
                     .padding(.vertical, 8)
                     .background(
@@ -42,17 +73,39 @@ struct UserLoginView: View {
                     )
                     .padding(.leading)
                     .padding(.trailing)
+                
                 // sign-in button
-                NavigationLink {
-                    TabNavigatorView()
-                } label:{
+                //NavigationLink {
+                    //TabNavigatorView()
+               //}
+                Button{
+                    Task{
+                        do{
+                            try await viewModel.signUp()
+                            print("Signed up")
+                            return
+                        }
+                        catch {
+                            print(error)
+                        }
+                        do{
+                            try await viewModel.signIn()
+                            print("Signed in")
+                            return
+                        }
+                        catch {
+                            print(error)
+                        }
+                    }
+                }
+                label:{
                     Text("Sign In")
                         .foregroundStyle(Color.background2)
                         .padding(EdgeInsets(top:10,leading:100, bottom:10, trailing: 100 ))
                         .background(Color.main)
                         .clipShape(RoundedRectangle(cornerRadius: 30))
                         .padding(.top, 10)
-                }.navigationBarBackButtonHidden(true)
+                }//.navigationBarBackButtonHidden(true)
                 HStack{
                     Text("Dont have an account?")
                         .foregroundStyle(Color.main)

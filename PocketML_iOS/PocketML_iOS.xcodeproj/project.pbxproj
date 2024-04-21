@@ -22,6 +22,7 @@
 		005651F62BAF05470080E586 /* ScriptsDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 005651F52BAF05470080E586 /* ScriptsDetailsView.swift */; };
 		005651F82BAF61970080E586 /* TabNavigatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 005651F72BAF61970080E586 /* TabNavigatorView.swift */; };
 		4971A2D82BBF7C13009D352C /* Structures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4971A2D72BBF7C13009D352C /* Structures.swift */; };
+		49815E072BD47E5F0049F2C2 /* AuthenticationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49815E062BD47E5F0049F2C2 /* AuthenticationManager.swift */; };
 		49A9A9252BD3198400EA6EF8 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 49A9A9242BD3198400EA6EF8 /* GoogleService-Info.plist */; };
 		49A9A9282BD31AD800EA6EF8 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 49A9A9272BD31AD800EA6EF8 /* FirebaseAuth */; };
 		EED1BCA42BD2F6C300684C07 /* ViewModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = EED1BCA32BD2F6C300684C07 /* ViewModifiers.swift */; };
@@ -63,6 +64,7 @@
 		005651F52BAF05470080E586 /* ScriptsDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScriptsDetailsView.swift; sourceTree = "<group>"; };
 		005651F72BAF61970080E586 /* TabNavigatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabNavigatorView.swift; sourceTree = "<group>"; };
 		4971A2D72BBF7C13009D352C /* Structures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Structures.swift; sourceTree = "<group>"; };
+		49815E062BD47E5F0049F2C2 /* AuthenticationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationManager.swift; sourceTree = "<group>"; };
 		49A9A9242BD3198400EA6EF8 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../GoogleService-Info.plist"; sourceTree = "<group>"; };
 		EED1BCA32BD2F6C300684C07 /* ViewModifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModifiers.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -119,6 +121,7 @@
 			children = (
 				005651F72BAF61970080E586 /* TabNavigatorView.swift */,
 				005651E92BAF044B0080E586 /* UserLoginView.swift */,
+				49815E062BD47E5F0049F2C2 /* AuthenticationManager.swift */,
 				005651BF2BAE3B170080E586 /* TunerMLApp.swift */,
 				005651C12BAE3B170080E586 /* ContentView.swift */,
 				005651EB2BAF04720080E586 /* JobDashboardView.swift */,
@@ -313,6 +316,7 @@
 				4971A2D82BBF7C13009D352C /* Structures.swift in Sources */,
 				005651F62BAF05470080E586 /* ScriptsDetailsView.swift in Sources */,
 				005651F02BAF04ED0080E586 /* JobDetailsView.swift in Sources */,
+				49815E072BD47E5F0049F2C2 /* AuthenticationManager.swift in Sources */,
 				005651C02BAE3B170080E586 /* TunerMLApp.swift in Sources */,
 				005651EC2BAF04720080E586 /* JobDashboardView.swift in Sources */,
 			);
