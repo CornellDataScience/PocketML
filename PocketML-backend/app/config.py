@@ -5,6 +5,8 @@ class Settings(BaseSettings):
     PROJECT_NAME: str = "PocketML"
     API_V1_STR: str = "/api/v1"
 
+    DATABASE_URL: str = "sqlite:///./app.db"
+
     AWS_ACCESS_KEY_ID: str
     AWS_SECRET_ACCESS_KEY: str
 
