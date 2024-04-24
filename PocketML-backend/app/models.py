@@ -16,3 +16,4 @@ class CreateUser(SQLModel):
     email: str
     name: str
     password: str
+    email_notif: bool
