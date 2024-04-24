@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi import APIRouter
 from fastapi.routing import APIRoute
 
-from routers import users, jobs
+from api import users, jobs
 from config import settings
 
 from sqlmodel import SQLModel, create_engine
