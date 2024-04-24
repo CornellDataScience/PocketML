@@ -7,6 +7,8 @@ class Settings(BaseSettings):
 
     DATABASE_URL: str = "sqlite:///./app.db"
 
+    FIREBASE_SDK_JSON: str = "./firebase-admin-sdk-for-pocketml.json"
+
     AWS_ACCESS_KEY_ID: str
     AWS_SECRET_ACCESS_KEY: str
 
