@@ -26,11 +26,11 @@ struct JobDashboardView: View {
     var body: some View {
         NavigationStack{
             VStack{
-                Text("Your Jobs")
+                Text("Your Projects")
                     .modifier(MainTitleModifier())
                 Spacer()
-                JobListSection("Current Jobs", jobs: currentJobs)
-                JobListSection("Past Jobs", jobs: pastJobs)
+                JobListSection("Current Projects", jobs: currentJobs)
+                JobListSection("Past Projects", jobs: pastJobs)
                 Divider().background(Color.background)
             
             }
