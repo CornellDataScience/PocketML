@@ -21,7 +21,7 @@ def get_db_session():
 SessionDependency = Annotated[Session, Depends(get_db_session)]
 
 
-def get_current_user(request: Request):
+def get_user_token(request: Request):
     token = request.headers.get("Authorization")
     if not token:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Can not find the authorization token.")
@@ -39,4 +39,4 @@ def get_current_user(request: Request):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="User has been disabled.")
 
 
-CurrentUserDependency = Annotated[dict, Depends(get_current_user)]
+UserTokenDependency = Annotated[dict, Depends(get_user_token)]
