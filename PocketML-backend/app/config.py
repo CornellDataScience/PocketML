@@ -1,4 +1,7 @@
 from pydantic_settings import BaseSettings, SettingsConfigDict
+import os
+
+os.chdir(os.path.dirname(__file__)[:-4])
 
 
 class Settings(BaseSettings):
