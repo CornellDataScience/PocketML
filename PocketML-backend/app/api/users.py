@@ -2,7 +2,7 @@ from fastapi import APIRouter, status, HTTPException
 from models import UserCreate, User
 from dependencies import SessionDependency, UserTokenDependency
 
-from database import _create_user, _get_user_by_email
+from crud import _create_user, _get_user_by_email
 
 from firebase_admin import auth
 
