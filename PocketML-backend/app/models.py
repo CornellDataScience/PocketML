@@ -6,6 +6,7 @@ class User(SQLModel, table=True):
     name: str = Field(default="undefined")
     token: str = Field(nullable=False)
     email_notif: bool = Field(default=True)
+    firebase_uid: str = Field(nullable=False)
 
     is_authenticated: bool = Field(default=False)
     is_admin: bool = Field(default=False)

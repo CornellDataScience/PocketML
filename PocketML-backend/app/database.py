@@ -38,6 +38,7 @@ def _create_user(*, session: Session, user_create: UserCreate) -> str:
         email=user_create.email,
         name=user_create.name,
         email_notif=user_create.email_notif,
+        firebase_uid=firebase_uid,
         is_active=True,
         is_superuser=False
     )
@@ -70,6 +71,7 @@ def _delete_user(*, session: Session, user: User) -> Any:
     Precondition: The user exists in the database
     :return: the deleted user
     """
+    auth.delete_user(user.firebase_uid)
     session.delete(user)
     session.commit()
     return user
