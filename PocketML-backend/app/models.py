@@ -37,4 +37,6 @@ class CreateJob(SQLModel):
     start_time: str
 
 
-UserUpdate = UserCreate
+class UserUpdate(SQLModel):
+    name: str
+    email_notif: bool
