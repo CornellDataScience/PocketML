@@ -6,7 +6,7 @@ from typing import Any
 from starlette import status
 
 from config import settings
-from models import User, CreateUser
+from models import User, UserCreate, UserUpdate
 
 from firebase_admin import auth
 
@@ -19,7 +19,7 @@ def _get_user_by_email(*, session: Session, email: str) -> User:
     return user
 
 
-def _create_user(*, session: Session, user_create: CreateUser) -> str:
+def _create_user(*, session: Session, user_create: UserCreate) -> str:
     """
     Precondition: The user does not exist in the database
 
@@ -49,24 +49,27 @@ def _create_user(*, session: Session, user_create: CreateUser) -> str:
     return firebase_uid
 
 
-def _update_user(*, session: Session, db_user: User, user_in: UserUpdate) -> Any:
-    user_data = user_in.model_dump(exclude_unset=True)
-    extra_data = {}
-    if "password" in user_data:
-        password = user_data["password"]
-        hashed_password = get_password_hash(password)
-        extra_data["hashed_password"] = hashed_password
-    db_user.sqlmodel_update(user_data, update=extra_data)
-    session.add(db_user)
+def _update_user(*, session: Session, user_in: UserUpdate) -> User:
+    """
+    :return: the updated user
+    """
+    user = session.exec(select(User).where(User.email == user_in.email)).first()
+    if not user:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail="Internal error: could not find the user in the database")
+
+    for key, value in user_in.dict(exclude_unset=True).items():
+        setattr(user, key, value)
     session.commit()
-    session.refresh(db_user)
-    return db_user
+
+    return user
 
 
-def authenticate(*, session: Session, email: str, password: str) -> User:
-    db_user = get_user_by_email(session=session, email=email)
-    if not db_user:
-        return None
-    if not verify_password(password, db_user.hashed_password):
-        return None
-    return db_user
+def _delete_user(*, session: Session, user: User) -> Any:
+    """
+    Precondition: The user exists in the database
+    :return: the deleted user
+    """
+    session.delete(user)
+    session.commit()
+    return user

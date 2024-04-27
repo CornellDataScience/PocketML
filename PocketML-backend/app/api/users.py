@@ -1,5 +1,5 @@
 from fastapi import APIRouter, status, HTTPException
-from models import CreateUser, User
+from models import UserCreate, User
 from dependencies import SessionDependency, UserTokenDependency
 
 from database import _create_user, _get_user_by_email
@@ -10,7 +10,7 @@ router = APIRouter()
 
 
 @router.post("/create_user", status_code=status.HTTP_201_CREATED)
-async def create_user(new_user: CreateUser, session: SessionDependency):
+async def create_user(new_user: UserCreate, session: SessionDependency):
     """
     Creates a new user by adding the user to firebase and S3
     :return:
