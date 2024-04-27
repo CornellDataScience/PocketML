@@ -33,7 +33,7 @@ def on_startup():
         Handles the creation of the database and tables
         """
         connect_args = {"check_same_thread": False}
-        engine = create_engine(sqlite_url=settings.DATABASE_URL, echo=True, connect_args=connect_args)
+        engine = create_engine(url=settings.DATABASE_URL, echo=True, connect_args=connect_args)
         SQLModel.metadata.create_all(engine)
 
     create_db_and_tables()
