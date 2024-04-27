@@ -8,6 +8,8 @@ class User(SQLModel, table=True):
     email_notif: bool = Field(default=True)
     firebase_uid: str = Field(nullable=False)
 
+    # TODO list of jobs
+
     is_authenticated: bool = Field(default=False)
     is_admin: bool = Field(default=False)
 
@@ -24,6 +26,8 @@ class Job(SQLModel, table=True):
     wandb: bool = Field(default=False)
     wandb_link: str = Field(default="undefined")
     start_time: str = Field(default="undefined")
+
+    # TODO add a User
 
     current_step: int = Field(default=0)
     current_status: str = Field(default="stopped")  # should this be undefined?
