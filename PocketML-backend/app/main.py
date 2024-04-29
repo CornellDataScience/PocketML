@@ -5,7 +5,7 @@ from fastapi.routing import APIRoute
 from api import users, jobs
 from config import settings
 
-from sqlmodel import SQLModel, create_engine
+from database import create_db_and_tables
 
 api_router = APIRouter()
 api_router.include_router(users.router, prefix="/users", tags=["users"])
@@ -27,14 +27,6 @@ async def index():
 @app.on_event("startup")
 def on_startup():
     print("Starting up PocketML backend")
-
-    def create_db_and_tables():
-        """
-        Handles the creation of the database and tables
-        """
-        connect_args = {"check_same_thread": False}
-        engine = create_engine(url=settings.DATABASE_URL, echo=True, connect_args=connect_args)
-        SQLModel.metadata.create_all(engine)
 
     create_db_and_tables()
     print("PocketML backend started")

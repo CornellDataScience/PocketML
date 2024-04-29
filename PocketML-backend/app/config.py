@@ -9,6 +9,8 @@ class Settings(BaseSettings):
     API_V1_STR: str = "/api/v1"
 
     DATABASE_URL: str = "sqlite:///./app.db"
+    CONNECT_ARGS: dict = {"check_same_thread": False}
+    DEBUG: bool = True # TODO: change to false for production
 
     FIREBASE_SDK_JSON: str = "./firebase-admin-sdk-for-pocketml.json"
 
