@@ -6,7 +6,7 @@
 //
 
 import XCTest
-@testable import TunerML
+@testable import PocketML_iOS
 
 final class TunerMLTests: XCTestCase {
 
