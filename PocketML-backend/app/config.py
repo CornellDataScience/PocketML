@@ -8,10 +8,11 @@ class Settings(BaseSettings):
     PROJECT_NAME: str = "PocketML"
     API_V1_STR: str = "/api/v1"
 
+    DATETIME_FORMAT = "%Y-%m-%dT%H:%M:%S"
+
     DATABASE_URL: str = "sqlite:///./app.db"
     CONNECT_ARGS: dict = {"check_same_thread": False}
     DEBUG: bool = True  # TODO: change to false for production
-
     FIREBASE_SDK_JSON: str = "./firebase-admin-sdk-for-pocketml.json"
 
     DUMMY_USER_DANIEL: dict = {
