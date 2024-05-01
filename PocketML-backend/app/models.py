@@ -1,4 +1,4 @@
-from sqlmodel import Field, SQLModel
+from sqlmodel import Field, Relationship, SQLModel
 from pydantic import BaseModel
 
 
@@ -12,7 +12,7 @@ class User(SQLModel, table=True):
     # TODO REMOVE THIS
     password: str = Field(nullable=False)
 
-    # TODO list of jobs
+    jobs: list["Job"] = Relationship(back_populates="user")
 
     is_authenticated: bool = Field(default=False)
     is_admin: bool = Field(default=False)
@@ -26,15 +26,19 @@ class UserCreate(BaseModel):
 
 
 class Job(SQLModel, table=True):
-    name: str = Field(default="undefined", primary_key=True, unique=True, index=True)
-    wandb: bool = Field(default=False)
-    wandb_link: str = Field(default="undefined")
-    start_time: str = Field(default="undefined")
+    name: str = Field(primary_key=True, unique=True, index=True, nullable=False)
+    user_email: str = Field(foreign_key="user.email", nullable=False)
+    user: User = Relationship(back_populates="jobs")
 
-    # TODO add a User
+    wandb: bool = Field(nullable=False)
+    wandb_link: str = Field(nullable=False)
+    start_time: str = Field(nullable=False)
+    cluster_name: str = Field(nullable=False)
+
+    config: dict = Field(nullable=False)  # TODO: in the future use better data storage
 
     current_step: int = Field(default=0)
-    current_status: str = Field(default="stopped")  # should this be undefined?
+    current_status: str = Field(default="stopped")
     last_update_time: str = Field(default="undefined")
 
 
@@ -43,6 +47,8 @@ class CreateJob(BaseModel):
     wandb: bool
     wandb_link: str
     start_time: str
+    config: dict
+    cluster_name: str
 
 
 class UserUpdate(BaseModel):
