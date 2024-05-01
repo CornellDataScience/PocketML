@@ -40,11 +40,13 @@ def get_user_token(request: Request):
 
 
 def get_user_token_dummy(request: Request):
-    if "email" in list(request.keys()):
-        email = request["email"]
+    if "email" in list(request.headers.keys()):
+        email = request.headers["email"]
+        password = request.headers["password"]
     else:
         email = settings.DUMMY_USER_DANIEL["email"]
-    return {"email": email}
+        password = settings.DUMMY_USER_DANIEL['password']
+    return {"email": email, "password": password}
 
 
 # # TODO: Implement the get_user_token function
