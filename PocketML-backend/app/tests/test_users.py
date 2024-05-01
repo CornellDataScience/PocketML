@@ -4,7 +4,7 @@ from main import app
 from config import settings
 import os
 
-client = TestClient(app, base_url="http://testserver:8000/api/v1")
+client = TestClient(app, base_url=f"http://testserver:{settings.PORT}/api/v1")
 
 daniel_user = settings.DUMMY_USER_DANIEL
 
