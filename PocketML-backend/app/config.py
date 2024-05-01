@@ -7,6 +7,7 @@ os.chdir(os.path.dirname(__file__)[:-4])
 class Settings(BaseSettings):
     PROJECT_NAME: str = "PocketML"
     API_V1_STR: str = "/api/v1"
+    PORT: int = 8000
 
     DATETIME_FORMAT = "%Y-%m-%dT%H:%M:%S"
 
