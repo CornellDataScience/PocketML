@@ -5,7 +5,7 @@ from typing import Any
 
 from starlette import status
 
-from models import User, UserCreate, UserUpdate
+from models import User, UserCreate, UserUpdate, UserLogin
 
 from firebase_admin import auth
 
@@ -35,6 +35,7 @@ def _create_user(*, session: Session, user_create: UserCreate) -> str:
         email=user_create.email,
         name=user_create.name,
         email_notif=user_create.email_notif,
+        password=user_create.password,  # TODO remove this
         firebase_uid=firebase_uid,
         is_active=True,
         is_superuser=False
@@ -45,6 +46,20 @@ def _create_user(*, session: Session, user_create: UserCreate) -> str:
     session.refresh(new_user)
 
     return firebase_uid
+
+
+def _login_user(*, session: Session, user_login: UserLogin) -> str:
+    """
+    :return: the firebase uid of the user
+    """
+    user = _get_user_by_email(session=session, email=user_login.email)
+    if not user:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
+
+    if user.password != user_login.password:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Incorrect password")
+
+    return user.firebase_uid
 
 
 def _update_user(*, session: Session, user_in: UserUpdate) -> User:

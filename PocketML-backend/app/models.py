@@ -1,12 +1,16 @@
 from sqlmodel import Field, SQLModel
+from pydantic import BaseModel
 
 
 class User(SQLModel, table=True):
     email: str = Field(default="un@defin.ed", primary_key=True, unique=True, index=True)
     name: str = Field(default="undefined")
-    token: str = Field(nullable=False)
+    # token: str = Field(nullable=False)
     email_notif: bool = Field(default=True)
     firebase_uid: str = Field(nullable=False)
+
+    # TODO REMOVE THIS
+    password: str = Field(nullable=False)
 
     # TODO list of jobs
 
@@ -14,7 +18,7 @@ class User(SQLModel, table=True):
     is_admin: bool = Field(default=False)
 
 
-class UserCreate(SQLModel):
+class UserCreate(BaseModel):
     email: str
     name: str
     password: str
@@ -34,13 +38,18 @@ class Job(SQLModel, table=True):
     last_update_time: str = Field(default="undefined")
 
 
-class CreateJob(SQLModel):
+class CreateJob(BaseModel):
     name: str
     wandb: bool
     wandb_link: str
     start_time: str
 
 
-class UserUpdate(SQLModel):
+class UserUpdate(BaseModel):
     name: str
     email_notif: bool
+
+
+class UserLogin(BaseModel):
+    email: str
+    password: str

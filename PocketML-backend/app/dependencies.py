@@ -39,4 +39,15 @@ def get_user_token(request: Request):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="User has been disabled.")
 
 
-UserTokenDependency = Annotated[dict, Depends(get_user_token)]
+def get_user_token_dummy(request: Request):
+    if "email" in list(request.keys()):
+        email = request["email"]
+    else:
+        email = settings.DUMMY_USER_DANIEL["email"]
+    return {"email": email}
+
+
+# # TODO: Implement the get_user_token function
+# UserTokenDependency = Annotated[dict, Depends(get_user_token)]
+# TODO: add Annotated makes it doesn't work (sth concerns with the generic class)
+UserTokenDependency = Depends(get_user_token_dummy)

@@ -10,9 +10,16 @@ class Settings(BaseSettings):
 
     DATABASE_URL: str = "sqlite:///./app.db"
     CONNECT_ARGS: dict = {"check_same_thread": False}
-    DEBUG: bool = True # TODO: change to false for production
+    DEBUG: bool = True  # TODO: change to false for production
 
     FIREBASE_SDK_JSON: str = "./firebase-admin-sdk-for-pocketml.json"
+
+    DUMMY_USER_DANIEL: dict = {
+        "name": "Daniel",
+        "email": "cndanielwang3@gmail.com",  # Fake email
+        "password": "password",  # not my real password
+        "email_notif": True
+    }
 
     AWS_ACCESS_KEY_ID: str
     AWS_SECRET_ACCESS_KEY: str
