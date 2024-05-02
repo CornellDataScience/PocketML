@@ -9,7 +9,7 @@ class Settings(BaseSettings):
     API_V1_STR: str = "/api/v1"
     PORT: int = 8000
 
-    DATETIME_FORMAT = "%Y-%m-%dT%H:%M:%S"
+    DATETIME_FORMAT: str = "%Y-%m-%dT%H:%M:%S"
 
     DATABASE_URL: str = "sqlite:///./app.db"
     CONNECT_ARGS: dict = {"check_same_thread": False}
