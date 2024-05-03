@@ -30,7 +30,7 @@ struct JobDetailsView: View {
                         
 //                        ScriptWidget("<Script Title>")
                     WandbWidget(viewModel)
-                   HyperparamConfig()
+                   HyperparamConfig(viewModel)
                     // temporary points for graph
                     // will have to make a binding or attribute of a job
 //                    let _ : [CGFloat] = [0.92424, 0.82897, 0.67572894, 0.4280957984, 0.2438574, 0.188435794, 0.1348573, 0.067584938, 0.04423, 0.01423]
@@ -100,11 +100,17 @@ func WandbWidget(_ viewModel: JobInfoViewModel) -> some View {
     .padding(.trailing)
 }
 
-func HyperparamConfig() -> some View {
-    VStack{
+func HyperparamConfig(_ viewModel: JobInfoViewModel) -> some View {
+    var output = ""
+    let hyperparameters = viewModel.jobDetails?.hyperparameters ?? [:]
+    for (key, value) in hyperparameters {
+        output.append("\(key): \(value)\n")
+    }
+    return VStack{
         Text("Model Parameters")
             .modifier(Title2Modifier())
             .bold()
+        /*
         VStack(alignment: .leading){
             Text("Model Type")
             Text("Kernel")
@@ -112,11 +118,14 @@ func HyperparamConfig() -> some View {
             Text("Max Iterations")
             
         }
+        */
+        VStack(alignment: .leading){
+            Text(output)
+        }
         .padding(.leading)
         .padding(.trailing)
         .background(RoundedRectangle(cornerRadius: 10.0)
             .fill(Color.background2))
-        
     }
 }
 
