@@ -1,5 +1,16 @@
 from sqlmodel import Field, Relationship, SQLModel
 from pydantic import BaseModel
+import json
+
+
+def dict_to_str(d: dict) -> str:
+    "string of dictionary"
+    return json.dumps(d)
+
+
+def str_to_dict(s: str) -> dict:
+    "dictionary of string"
+    return json.loads(s)
 
 
 class User(SQLModel, table=True):
@@ -47,8 +58,7 @@ class Job(SQLModel, table=True):
     start_time: str = Field(nullable=False)
     cluster_name: str = Field(nullable=False)
 
-    # TODO: in the future use better data storage
-    config: dict = Field(nullable=False)
+    config: str = Field(nullable=False)
 
     current_step: int = Field(default=0)
     current_status: str = Field(default="stopped")
