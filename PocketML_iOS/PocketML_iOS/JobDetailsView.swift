@@ -9,7 +9,7 @@ import SwiftUI
 
 struct JobDetailsView: View {
     @State private var isActive = true
-    
+    @StateObject private var viewModel = JobInfoViewModel()
     
     var selectedJob : Job
     
@@ -17,6 +17,7 @@ struct JobDetailsView: View {
         VStack{
             ScrollView{
                 VStack(spacing:20){
+                    
                     JobTitle(selectedJob.jobTitle)
 //                    Text("Status")
 //                        .font(.title)
@@ -28,7 +29,7 @@ struct JobDetailsView: View {
                        
                         
 //                        ScriptWidget("<Script Title>")
-                    WandbWidget()
+                    WandbWidget(viewModel)
                    HyperparamConfig()
                     // temporary points for graph
                     // will have to make a binding or attribute of a job
@@ -85,16 +86,17 @@ func StatusDisplay(_ active: Bool) -> some View {
     }
 }
 
-func WandbWidget() -> some View {
-    ZStack(alignment: .center, content: {
+func WandbWidget(_ viewModel: JobInfoViewModel) -> some View {
+    let wandbLink = viewModel.jobDetails?.wandb.link ?? "Failed"
 
-        Text("View on WandB >")
+    return ZStack(alignment: .center) {
+        Link("View on WandB", destination: URL(string: wandbLink)!)
             .font(.title3)
             .frame(width: 300, height: 50)
-            .foregroundStyle(Color.main)
+            .foregroundColor(Color.main)
             .background(RoundedRectangle(cornerRadius: 10.0)
                 .fill(Color.background2))
-    })
+    }
     .padding(.trailing)
 }
 

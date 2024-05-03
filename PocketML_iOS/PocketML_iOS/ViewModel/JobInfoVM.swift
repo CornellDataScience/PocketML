@@ -27,7 +27,7 @@ struct JobDetails: Codable {
     let startTime: String // Assuming it's a string in datetime format
 }
 
-class JobViewModel: ObservableObject {
+class JobInfoViewModel: ObservableObject {
     @Published var jobDetails: JobDetails?
     
     // call this function on ../api/v1/jobs/<job_id>

@@ -14,7 +14,7 @@ struct Jobs: Codable {
     let description: String
 }
 
-class ViewModel: ObservableObject {
+class JobsViewModel: ObservableObject {
     @Published var jobs: [String: Jobs] = [:]
     
     // call this function on ../api/v1/jobs
@@ -42,4 +42,3 @@ class ViewModel: ObservableObject {
         }.resume()
     }
 }
-
