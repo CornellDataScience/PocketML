@@ -35,7 +35,7 @@ class Job(SQLModel, table=True):
     start_time: str = Field(nullable=False)
     cluster_name: str = Field(nullable=False)
 
-    config: dict = Field(nullable=False)  # TODO: in the future use better data storage
+    # config: dict = Field(nullable=False)  # TODO: in the future use better data storage
 
     current_step: int = Field(default=0)
     current_status: str = Field(default="stopped")

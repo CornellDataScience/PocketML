@@ -24,6 +24,21 @@ async def index():
     return {"message": "Welcome to PocketML"}
 
 
+from motor.motor_asyncio import AsyncIOMotorClient
+
+client = AsyncIOMotorClient("mongodb://localhost:27010")
+db = client.your_database_name
+
+
+@app.get('/a')
+async def a():
+    items = []
+    # Use async for to iterate over cursor
+    async for item in db.items.find():
+        items.append(item)
+    return {"items": items}
+
+
 @app.on_event("startup")
 def on_startup():
     print("Starting up PocketML backend")
