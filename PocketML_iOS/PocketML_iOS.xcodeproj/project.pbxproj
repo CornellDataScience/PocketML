@@ -21,7 +21,8 @@
 		005651F42BAF05380080E586 /* ScriptsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 005651F32BAF05380080E586 /* ScriptsView.swift */; };
 		005651F62BAF05470080E586 /* ScriptsDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 005651F52BAF05470080E586 /* ScriptsDetailsView.swift */; };
 		005651F82BAF61970080E586 /* TabNavigatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 005651F72BAF61970080E586 /* TabNavigatorView.swift */; };
-		0057E84B2BD3161E001F1E89 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0057E84A2BD3161E001F1E89 /* API.swift */; };
+		0057E84D2BE569D0001F1E89 /* JobsVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0057E84C2BE569D0001F1E89 /* JobsVM.swift */; };
+		0057E8582BE57561001F1E89 /* JobInfoVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0057E8572BE57561001F1E89 /* JobInfoVM.swift */; };
 		4971A2D82BBF7C13009D352C /* Structures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4971A2D72BBF7C13009D352C /* Structures.swift */; };
 		EED1BCA42BD2F6C300684C07 /* ViewModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = EED1BCA32BD2F6C300684C07 /* ViewModifiers.swift */; };
 /* End PBXBuildFile section */
@@ -61,7 +62,8 @@
 		005651F32BAF05380080E586 /* ScriptsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScriptsView.swift; sourceTree = "<group>"; };
 		005651F52BAF05470080E586 /* ScriptsDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScriptsDetailsView.swift; sourceTree = "<group>"; };
 		005651F72BAF61970080E586 /* TabNavigatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabNavigatorView.swift; sourceTree = "<group>"; };
-		0057E84A2BD3161E001F1E89 /* API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
+		0057E84C2BE569D0001F1E89 /* JobsVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JobsVM.swift; sourceTree = "<group>"; };
+		0057E8572BE57561001F1E89 /* JobInfoVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JobInfoVM.swift; sourceTree = "<group>"; };
 		4971A2D72BBF7C13009D352C /* Structures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Structures.swift; sourceTree = "<group>"; };
 		EED1BCA32BD2F6C300684C07 /* ViewModifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModifiers.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -115,7 +117,6 @@
 			isa = PBXGroup;
 			children = (
 				005651F72BAF61970080E586 /* TabNavigatorView.swift */,
-				0057E84A2BD3161E001F1E89 /* API.swift */,
 				005651E92BAF044B0080E586 /* UserLoginView.swift */,
 				005651BF2BAE3B170080E586 /* TunerMLApp.swift */,
 				005651C12BAE3B170080E586 /* ContentView.swift */,
@@ -127,6 +128,7 @@
 				005651F32BAF05380080E586 /* ScriptsView.swift */,
 				4971A2D72BBF7C13009D352C /* Structures.swift */,
 				005651F52BAF05470080E586 /* ScriptsDetailsView.swift */,
+				0057E84E2BE56BB7001F1E89 /* ViewModel */,
 				005651C52BAE3B190080E586 /* Preview Content */,
 			);
 			path = PocketML_iOS;
@@ -155,6 +157,15 @@
 				005651DC2BAE3B190080E586 /* PocketML_iOSUITestsLaunchTests.swift */,
 			);
 			path = PocketML_iOSUITests;
+			sourceTree = "<group>";
+		};
+		0057E84E2BE56BB7001F1E89 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				0057E84C2BE569D0001F1E89 /* JobsVM.swift */,
+				0057E8572BE57561001F1E89 /* JobInfoVM.swift */,
+			);
+			path = ViewModel;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -290,14 +301,15 @@
 				005651EA2BAF044B0080E586 /* UserLoginView.swift in Sources */,
 				005651F22BAF05050080E586 /* ClustersView.swift in Sources */,
 				EED1BCA42BD2F6C300684C07 /* ViewModifiers.swift in Sources */,
+				0057E84D2BE569D0001F1E89 /* JobsVM.swift in Sources */,
 				005651F82BAF61970080E586 /* TabNavigatorView.swift in Sources */,
+				0057E8582BE57561001F1E89 /* JobInfoVM.swift in Sources */,
 				005651C22BAE3B170080E586 /* ContentView.swift in Sources */,
 				005651F42BAF05380080E586 /* ScriptsView.swift in Sources */,
 				4971A2D82BBF7C13009D352C /* Structures.swift in Sources */,
 				005651F62BAF05470080E586 /* ScriptsDetailsView.swift in Sources */,
 				005651F02BAF04ED0080E586 /* JobDetailsView.swift in Sources */,
 				005651C02BAE3B170080E586 /* TunerMLApp.swift in Sources */,
-				0057E84B2BD3161E001F1E89 /* API.swift in Sources */,
 				005651EC2BAF04720080E586 /* JobDashboardView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
