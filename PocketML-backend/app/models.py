@@ -80,3 +80,19 @@ class JobUpdate(BaseModel):
     current_step: int
     current_status: str
     last_update_time: str
+
+
+class GetChangeResponse(BaseModel):
+    is_changed: bool
+    changes: str
+
+
+class ActionSubmit(BaseModel):
+    action: str
+    updates: str
+
+
+class CurrentJobUpdate(BaseModel):
+    step: int
+    status: str
+    update_time: str

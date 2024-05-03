@@ -1,8 +1,20 @@
 from fastapi import APIRouter, Depends, status, HTTPException
-from models import JobCreate, Job, User, JobUpdate, dict_to_str, str_to_dict
+from models import JobCreate, Job, User, JobUpdate, dict_to_str, str_to_dict, GetChangeResponse
 from dependencies import SessionDependency, UserTokenDependency
 
 router = APIRouter()
+
+
+@router.get('/', status_code=status.HTTP_200_OK, response_model=list[Job])
+async def get_jobs(session: SessionDependency, token: dict = UserTokenDependency):
+    """
+    Get all jobs
+    """
+    user = session.query(User).filter(User.email == token["email"]).first()
+    if user is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail="User for this task is not found. Please contact us.")
+    return user.jobs
 
 
 @router.post("/create_job", status_code=status.HTTP_201_CREATED)
@@ -37,7 +49,7 @@ async def create_job(new_job: JobCreate, session: SessionDependency, token: dict
     return {"detail": f"Job {new_job.name} created successfully"}
 
 
-@router.get("/api/v1/jobs/{job_id}", status_code=status.HTTP_200_OK, dependencies=[], response_model=Job,
+@router.get("/{job_id}", status_code=status.HTTP_200_OK, dependencies=[], response_model=Job,
             response_model_exclude={'config'})
 async def get_job(job_id: int, session: SessionDependency, token: dict = UserTokenDependency):
     """
@@ -51,7 +63,7 @@ async def get_job(job_id: int, session: SessionDependency, token: dict = UserTok
     return job
 
 
-@router.put("/api/v1/jobs/{job_id}", status_code=status.HTTP_200_OK, dependencies=[], response_model=Job,
+@router.put("/{job_id}", status_code=status.HTTP_200_OK, dependencies=[], response_model=Job,
             response_model_exclude={'config'})
 async def update_job(*, session: SessionDependency, job_update: JobUpdate) -> Job:
     """
@@ -66,3 +78,15 @@ async def update_job(*, session: SessionDependency, job_update: JobUpdate) -> Jo
         setattr(job, key, value)
     session.commit()
     return job
+
+
+@router.get('{job_id}/get_change', status_code=status.HTTP_200_OK, response_model=GetChangeResponse)
+async def get_change(job_id: int, session: SessionDependency, token: dict = UserTokenDependency):
+    """
+    Get the change of the job
+    """
+    job = session.query(Job).filter(Job.id == job_id).first()
+    if job is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail="Job not found")
+    return job.get_change()
