@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends, status, HTTPException
-from models import JobCreate, Job, User, JobUpdate
+from models import JobCreate, Job, User, JobUpdate, dict_to_str, str_to_dict
 from dependencies import SessionDependency, UserTokenDependency
 
 router = APIRouter()
