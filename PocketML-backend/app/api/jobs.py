@@ -1,17 +1,18 @@
 from fastapi import APIRouter, Depends, status, HTTPException
-from models import CreateJob, Job, User
+from models import JobCreate, Job, User
 from dependencies import SessionDependency, UserTokenDependency
 
 router = APIRouter()
 
 
 @router.get("/create_job", status_code=status.HTTP_201_CREATED)
-async def create_job(new_job: CreateJob, session: SessionDependency, token: dict = UserTokenDependency):
+async def create_job(new_job: JobCreate, session: SessionDependency, token: dict = UserTokenDependency):
     """
     Creates a new job by adding them to 
     """
     if session.query(Job).filter(Job.name == new_job.name).first() is not None:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Job already exists")
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST, detail="Job already exists")
 
     job = Job(**{
         **new_job.dict(),
