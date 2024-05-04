@@ -248,5 +248,5 @@ func ActionsWidget() -> some View{
 }
 
 #Preview {
-    JobDetailsView(selectedJob: Job(jobTitle: "Job 1", completedEpochs: 1.25, totalEpochs: 5.0))
+    JobDetailsView(selectedJob: Job(jobTitle: "Job 1", completedEpochs: 1.25, totalEpochs: 5.0, jobID: "", isActive: true))
 }

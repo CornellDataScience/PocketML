@@ -18,7 +18,7 @@ class JobsViewModel: ObservableObject {
     @Published var jobs: [String: Jobs] = [:]
     
     // call this function on ../api/v1/jobs
-    func fetchData(from url: String) {
+    func fetchData(url: String) {
         guard let apiUrl = URL(string: url) else {
             print("Invalid URL: \(url)")
             return
