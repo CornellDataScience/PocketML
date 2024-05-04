@@ -10,21 +10,42 @@ async def get_jobs(session: SessionDependency, token: dict = UserTokenDependency
     """
     Get all jobs
     """
-    user = session.query(User).filter(User.email == token["email"]).first()
-    if user is None:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
-                            detail="User for this task is not found. Please contact us.")
+    # user = session.query(User).filter(User.email == token["email"]).first()
+    # if user is None:
+    #     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+    #                         detail="User for this task is not found. Please contact us.")
 
-    all_jobs = []
+    all_jobs = {}
+
+    class Job:
+        name = "dummy_michael_job"
+        description = "dummy_michael_description"
+        total_steps = 10
+        current_step = 5
+        active = True
+
+    class User:
+        jobs = [Job()]
+
+    user = User()
 
     for job in user.jobs:
-        all_jobs.append({
+        all_jobs[job.name] = {
             "name": job.name,
-            "start_time": job.start_time,
+            "description": job.description,
+            # "start_time": job.start_time,
+            "total_steps": job.total_steps,
             "current_step": job.current_step,
-        })
+            "active": job.active,
+        }
 
-    return {"detail": all_jobs}
+    res = {
+        "success": True,
+        "length": len(all_jobs),
+        "jobs": all_jobs,
+    }
+
+    return res
 
 
 @router.post("/new_job", status_code=status.HTTP_201_CREATED)
@@ -47,7 +68,8 @@ async def create_job(new_job: JobCreate, session: SessionDependency, token: dict
         cluster_name=new_job.cluster_name,
         current_step=0,
         current_status="stopped",
-        last_update_time="undefined"
+        last_update_time="undefined",
+        active=True,
     )
 
     user = session.query(User).filter(User.email == token["email"]).first()

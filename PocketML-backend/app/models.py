@@ -38,10 +38,11 @@ class UserLogin(BaseModel):
 
 
 class Job(SQLModel, table=True):
-    name: str = Field(primary_key=True, unique=True,
-                      index=True, nullable=False)
+    id: int = Field(default=None, primary_key=True, index=True, unique=True, nullable=False)
+    name: str = Field(nullable=False)
     user_email: str = Field(foreign_key="user.email", nullable=False)
     user: User = Relationship(back_populates="jobs")
+    active: bool = Field(default=False)
 
     wandb: bool = Field(nullable=False)
     wandb_link: str = Field(nullable=False)
@@ -51,6 +52,7 @@ class Job(SQLModel, table=True):
     config: str = Field(nullable=False)
 
     current_step: int = Field(default=0)
+    total_steps: int = Field(default=0)
     current_status: str = Field(default="stopped")
     last_update_time: str = Field(default="undefined")
 
