@@ -14,6 +14,7 @@ struct JobDashboardView: View {
     @State private var currentJobs: [Job] = []
     @State private var pastJobs: [Job] = []
     
+    // Function to populate current vs past jobs from endpoint response
     func classifyJobs(allJobs: [String: Jobs]){
         
         for (jobId, job) in allJobs{
@@ -35,7 +36,6 @@ struct JobDashboardView: View {
                 Text("Your Projects")
                     .modifier(MainTitleModifier())
                 Spacer()
-                
                 JobListSection("Current Projects", jobs: currentJobs)
                 JobListSection("Past Projects", jobs: pastJobs)
                 Divider().background(Color.background)
@@ -43,8 +43,10 @@ struct JobDashboardView: View {
             }
             .modifier(MainVStackModifier())
         }.onAppear(){
+            // get API data when the page appears and run classification function
             viewModel.fetchData(url:"") // TODO: add actual url route to /jobs endpoint
             let allJobs = viewModel.jobs
+            // expect that currentJobs and pastJobs will contain the correct objects when displaying on JobListSection
             classifyJobs(allJobs: allJobs)
         }
     }
