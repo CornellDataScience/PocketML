@@ -96,3 +96,7 @@ class CurrentJobUpdate(BaseModel):
     step: int
     status: str
     update_time: str
+
+
+class CurrentJobUpdateResponse(BaseModel):
+    action: str
