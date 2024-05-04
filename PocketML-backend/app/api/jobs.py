@@ -80,7 +80,7 @@ async def create_job(new_job: JobCreate, session: SessionDependency, token: dict
     session.add(job)
     session.commit()
 
-    return {"detail": f"Job {new_job.name} created successfully"}
+    return {"detail": job.id}
 
 
 @router.get("/{job_id}", status_code=status.HTTP_200_OK, dependencies=[], response_model=Job,
@@ -140,7 +140,7 @@ async def update_job(*, session: SessionDependency, job_update: JobUpdate) -> Jo
     )
 
 
-@router.get('{job_id}/get_change', status_code=status.HTTP_200_OK, response_model=GetChangeResponse)
+@router.get('/{job_id}/get_change', status_code=status.HTTP_200_OK)
 async def get_change(job_id: int, session: SessionDependency, token: dict = UserTokenDependency):
     """
     Get the change of the job
@@ -149,4 +149,27 @@ async def get_change(job_id: int, session: SessionDependency, token: dict = User
     if job is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                             detail="Job not found")
-    return job.get_change()
+    latest_update_implemented = job.latest_update_implemented
+    job.latest_update_implemented = False
+
+    return {
+        "is_changed": latest_update_implemented,
+        "config": json.loads(job.config)
+    }
+
+
+@router.post('<job_id>/submit_action', status_code=status.HTTP_201_CREATED)
+async def submit_action(job_id: int, action: ActionSubmit, session: SessionDependency,
+                        token: dict = UserTokenDependency):
+    """
+    Submit an action to the job
+    """
+    job = session.query(Job).filter(Job.id == job_id).first()
+    if job is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail="Job not found")
+    job.latest_update_implemented = False
+
+    return {
+        "action": "dummy_action"
+    }

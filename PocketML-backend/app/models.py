@@ -55,15 +55,17 @@ class Job(SQLModel, table=True):
     total_steps: int = Field(default=0)
     current_status: str = Field(default="stopped")
     last_update_time: str = Field(default="undefined")
+    latest_update_implemented: bool = Field(default=False)
 
 
 class JobCreate(BaseModel):
     name: str
     wandb: bool
     wandb_link: str
-    start_time: str
+    start_time: int
     config: dict
     cluster_name: str
+    total_steps: int
 
 
 class JobUpdate(BaseModel):

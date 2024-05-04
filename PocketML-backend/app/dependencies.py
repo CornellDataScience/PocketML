@@ -50,6 +50,6 @@ def get_user_token_dummy(request: Request):
 
 
 # # TODO: Implement the get_user_token function
-# UserTokenDependency = Annotated[dict, Depends(get_user_token)]
+# UserTokenDependency = Depends(get_user_token)
 # TODO: add Annotated makes it doesn't work (sth concerns with the generic class)
 UserTokenDependency = Depends(get_user_token_dummy)
