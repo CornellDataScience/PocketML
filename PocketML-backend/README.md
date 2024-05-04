@@ -29,3 +29,7 @@ To start the server in a development manner, run the following command:
 ```bash
 uvicorn app.main:app --reload
 ```
+
+## Understanding the Codebase
+
+The codebase is structured as follows:

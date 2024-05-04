@@ -15,13 +15,13 @@ struct TabNavigatorView: View {
             TabView {
                 JobDashboardView()
                     .tabItem {
-                        Label("Jobs", systemImage: "laptopcomputer.and.ipad")
+                        Label("Projects", systemImage: "laptopcomputer.and.ipad")
                     }
                 
-                ClustersView()
-                    .tabItem {
-                        Label("Clusters", systemImage: "apple.terminal")
-                    }
+//                ClustersView()
+//                    .tabItem {
+//                        Label("Clusters", systemImage: "apple.terminal")
+//                    }
                 
                 ScriptsView()
                     .tabItem {

@@ -10,34 +10,51 @@ import SwiftUI
 struct JobDashboardView: View {
 //    @State private var isPopoverPresented = false
 //    @State private var clusterData = ClusterData(name: "", port: "", publicKey: "")
-    @State private var currentJobs: [Job] = [
-        Job(jobTitle: "Job 1", completedEpochs: 1.25, totalEpochs: 5.0),
-        Job(jobTitle: "Job 2", completedEpochs: 1.05, totalEpochs: 3.0),
-        Job(jobTitle: "Job 6", completedEpochs: 2.05, totalEpochs: 6.0),
-        Job(jobTitle: "Job 8", completedEpochs: 2.0, totalEpochs: 10.0)
-    ]
-    @State private var pastJobs: [Job] = [
-        Job(jobTitle: "Job 3", completedEpochs: 5.0, totalEpochs: 5.0),
-        Job(jobTitle: "Job 4", completedEpochs: 10.0, totalEpochs: 10.0),
-        Job(jobTitle: "Job 5", completedEpochs: 1.0, totalEpochs: 1.0),
-        Job(jobTitle: "Job 7", completedEpochs: 2.0, totalEpochs: 2.0)
-    ]
+    @StateObject private var viewModel = JobsViewModel()
+    @State private var currentJobs: [Job] = []
+    @State private var pastJobs: [Job] = []
+    
+    // Function to populate current vs past jobs from endpoint response
+    func classifyJobs(allJobs: [String: Jobs]){
+        
+        for (jobId, job) in allJobs{
+            
+            let j = Job(jobTitle: job.name, completedEpochs: 1.0, totalEpochs: 5.0, jobID: jobId, isActive: job.active )
+            
+            if job.active{
+                currentJobs.append(j)
+            } else {
+                pastJobs.append(j)
+            }
+        }
+    }
+    
 
     var body: some View {
         NavigationStack{
             VStack{
-                Text("Your Jobs")
+                Text("Your Projects")
                     .modifier(MainTitleModifier())
                 Spacer()
-                JobListSection("Current Jobs", jobs: currentJobs)
-                JobListSection("Past Jobs", jobs: pastJobs)
+                JobListSection("Current Projects", jobs: currentJobs)
+                JobListSection("Past Projects", jobs: pastJobs)
                 Divider().background(Color.background)
             
             }
             .modifier(MainVStackModifier())
+        }.onAppear(){
+            // get API data when the page appears and run classification function
+            viewModel.fetchData(url:"") // TODO: add actual url route to /jobs endpoint
+            let allJobs = viewModel.jobs
+            // expect that currentJobs and pastJobs will contain the correct objects when displaying on JobListSection
+            classifyJobs(allJobs: allJobs)
         }
     }
 }
+
+
+
+
 
 func JobListSection(_ sectionTitle: String, jobs: [Job]) -> some View {
     VStack{

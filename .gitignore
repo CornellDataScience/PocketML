@@ -121,6 +121,8 @@ celerybeat.pid
 
 # Environments
 PocketML-backend/.env
+PocketML-backend/*.json
+
 .venv
 env/
 venv/
@@ -161,3 +163,4 @@ cython_debug/
 
 
 .DS_Store
+PocketML-backend/*.db

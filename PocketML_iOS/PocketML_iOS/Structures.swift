@@ -14,6 +14,8 @@ struct Job: Identifiable{
     let jobTitle : String
     let completedEpochs : Double
     let totalEpochs : Double
+    let jobID : String
+    let isActive : Bool
 //    let milestones : [Milestone]
     // TODO: let trainLoss : Double
 }

@@ -1,0 +1,11 @@
+{
+	"success": true,
+	"length": 1,
+	"jobs": {
+		"abc_id": {
+			"name": "job1",
+			"active": true,
+			"description": "a meaningingless job"
+		}
+	}
+}
