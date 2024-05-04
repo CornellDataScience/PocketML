@@ -18,6 +18,7 @@ async def get_jobs(session: SessionDependency, token: dict = UserTokenDependency
     all_jobs = {}
 
     class Job:
+        id = '1'
         name = "dummy_michael_job"
         description = "dummy_michael_description"
         total_steps = 10
@@ -30,7 +31,7 @@ async def get_jobs(session: SessionDependency, token: dict = UserTokenDependency
     user = User()
 
     for job in user.jobs:
-        all_jobs[job.name] = {
+        all_jobs[job.id] = {
             "name": job.name,
             "description": job.description,
             # "start_time": job.start_time,
@@ -152,9 +153,13 @@ async def get_change(job_id: int, session: SessionDependency, token: dict = User
     latest_update_implemented = job.latest_update_implemented
     job.latest_update_implemented = False
 
+    config_dict_str = json.loads(job.config)
+    for k, v in config_dict_str.items():
+        config_dict_str[k] = str(v)
+
     return {
         "is_changed": latest_update_implemented,
-        "config": json.loads(job.config)
+        "config": config_dict_str
     }
 
 
