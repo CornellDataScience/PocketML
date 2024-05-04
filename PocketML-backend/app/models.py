@@ -3,16 +3,6 @@ from pydantic import BaseModel
 import json
 
 
-def dict_to_str(d: dict) -> str:
-    "string of dictionary"
-    return json.dumps(d)
-
-
-def str_to_dict(s: str) -> dict:
-    "dictionary of string"
-    return json.loads(s)
-
-
 class User(SQLModel, table=True):
     email: str = Field(default="un@defin.ed",
                        primary_key=True, unique=True, index=True)

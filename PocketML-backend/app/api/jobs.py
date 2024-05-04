@@ -5,7 +5,7 @@ from dependencies import SessionDependency, UserTokenDependency
 router = APIRouter()
 
 
-@router.get('/', status_code=status.HTTP_200_OK, response_model=list[Job])
+@router.get('/', status_code=status.HTTP_200_OK)
 async def get_jobs(session: SessionDependency, token: dict = UserTokenDependency):
     """
     Get all jobs
@@ -14,10 +14,20 @@ async def get_jobs(session: SessionDependency, token: dict = UserTokenDependency
     if user is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                             detail="User for this task is not found. Please contact us.")
-    return user.jobs
+
+    all_jobs = []
+
+    for job in user.jobs:
+        all_jobs.append({
+            "name": job.name,
+            "start_time": job.start_time,
+            "current_step": job.current_step,
+        })
+
+    return all_jobs
 
 
-@router.post("/create_job", status_code=status.HTTP_201_CREATED)
+@router.post("/new_job", status_code=status.HTTP_201_CREATED)
 async def create_job(new_job: JobCreate, session: SessionDependency, token: dict = UserTokenDependency):
     """
     Creates a new job by adding them to 
@@ -28,10 +38,12 @@ async def create_job(new_job: JobCreate, session: SessionDependency, token: dict
 
     job = Job(
         name=new_job.name,
+        user_email=token["email"],
+
         wandb=new_job.wandb,
         wandb_link=new_job.wandb_link,
         start_time=new_job.start_time,
-        config=dict_to_str(new_job.config),
+        config=json.dumps(new_job.config),
         cluster_name=new_job.cluster_name,
         current_step=0,
         current_status="stopped",
@@ -60,7 +72,20 @@ async def get_job(job_id: int, session: SessionDependency, token: dict = UserTok
     if job is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                             detail="Job not found")
-    return job
+    # return job
+    return Job(
+        name="dummy_michael_job",
+        user_email="dummy_michael_email",
+
+        wandb="dummywandb",
+        wandb_link="dummywandblink",
+        start_time="new_job.start_time",
+        config="json.dumps(new_job.config)",
+        cluster_name="new_job.cluster_name",
+        current_step=0,
+        current_status="stopped",
+        last_update_time="undefined"
+    )
 
 
 @router.put("/{job_id}", status_code=status.HTTP_200_OK, dependencies=[], response_model=Job,
@@ -77,7 +102,20 @@ async def update_job(*, session: SessionDependency, job_update: JobUpdate) -> Jo
     for key, value in job_update.model_dump(exclude_unset=True).items():
         setattr(job, key, value)
     session.commit()
-    return job
+    # return job
+    return Job(
+        name="changed_dummy_michael_job",
+        user_email="dummy_michael_email",
+
+        wandb="dummywandb",
+        wandb_link="dummywandblink",
+        start_time="new_job.start_time",
+        config="json.dumps(new_job.config)",
+        cluster_name="new_job.cluster_name",
+        current_step=0,
+        current_status="stopped",
+        last_update_time="undefined"
+    )
 
 
 @router.get('{job_id}/get_change', status_code=status.HTTP_200_OK, response_model=GetChangeResponse)
