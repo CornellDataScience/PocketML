@@ -24,7 +24,7 @@ struct JobDetailsView: View {
 //                        .padding(.bottom, -20)
 //                        .monospaced()
 //                        .foregroundStyle(Color.main)
-                    StatusDisplay(isActive)
+                    StatusDisplay(viewModel)
                         
                        
                         
@@ -60,29 +60,25 @@ func JobTitle(_ text:String) -> some View {
 }
 
 
-func StatusDisplay(_ active: Bool) -> some View {
-    HStack{
-        if active {
-            Text("Active")
-                .font(.title2)
-                .foregroundStyle(Color.main)
-                .monospaced()
-                .bold()
-            Text("Inactive")
-                .font(.title2)
-                .monospaced()
-                .foregroundStyle(Color.background2)
-        } else {
-            Text("Active")
-                .font(.title2)
-                .monospaced()
-                .foregroundStyle(Color.background2)
-            Text("Inactive")
-                .font(.title2)
-                .foregroundStyle(Color.main)
-                .monospaced()
-                .bold()
+func StatusDisplay(_ viewModel: JobInfoViewModel) -> some View {
+    var active = viewModel.jobDetails?.active ?? true
+    
+    return HStack{
+        
+        Button("Active"){
+            //TODO: Change view model state to inactive
         }
+        .foregroundStyle(active == true ? Color.main: Color.background2)
+        .monospaced()
+        .font(active == true ? .title2.bold() : .title2)
+        
+        Button("Inactive"){
+            //TODO: Change view model state to active
+        }
+        .font(.title2)
+        .monospaced()
+        .foregroundStyle(active == false ? Color.main: Color.background2)
+        .font(active == false ? .title2.bold() : .title2)
     }
 }
 
