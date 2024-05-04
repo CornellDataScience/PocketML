@@ -24,7 +24,7 @@ async def get_jobs(session: SessionDependency, token: dict = UserTokenDependency
             "current_step": job.current_step,
         })
 
-    return all_jobs
+    return {"detail": all_jobs}
 
 
 @router.post("/new_job", status_code=status.HTTP_201_CREATED)
