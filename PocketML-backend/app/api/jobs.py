@@ -96,7 +96,7 @@ async def get_job(job_id: int, session: SessionDependency, token: dict = UserTok
 
 
 @router.put("/{job_id}", status_code=status.HTTP_200_OK, dependencies=[], response_model=Job,
-            response_model_exclude={'config'})
+            response_model_exclude={'latest_update_implemented', 'last_update_time', 'current_status'})
 async def update_job(*, session: SessionDependency, job_update: JobUpdate) -> Job:
     """
     Update the job with the given name
@@ -109,20 +109,20 @@ async def update_job(*, session: SessionDependency, job_update: JobUpdate) -> Jo
     for key, value in job_update.model_dump(exclude_unset=True).items():
         setattr(job, key, value)
     session.commit()
-    # return job
-    return Job(
-        name="changed_dummy_michael_job",
-        user_email="dummy_michael_email",
-
-        wandb="dummywandb",
-        wandb_link="dummywandblink",
-        start_time="new_job.start_time",
-        config="json.dumps(new_job.config)",
-        cluster_name="new_job.cluster_name",
-        current_step=0,
-        current_status="stopped",
-        last_update_time="undefined"
-    )
+    return job
+    # return Job(
+    #     name="changed_dummy_michael_job",
+    #     user_email="dummy_michael_email",
+    #
+    #     wandb="dummywandb",
+    #     wandb_link="dummywandblink",
+    #     start_time="new_job.start_time",
+    #     config="json.dumps(new_job.config)",
+    #     cluster_name="new_job.cluster_name",
+    #     current_step=0,
+    #     current_status="stopped",
+    #     last_update_time="undefined"
+    # )
 
 
 @router.get('/{job_id}/get_change', status_code=status.HTTP_200_OK)
@@ -135,7 +135,7 @@ async def get_change(job_id: int, session: SessionDependency, token: dict = User
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                             detail="Job not found")
     latest_update_implemented = job.latest_update_implemented
-    job.latest_update_implemented = False
+    job.latest_update_implemented = True
 
     config_dict_str = json.loads(job.config)
     for k, v in config_dict_str.items():
@@ -159,6 +159,10 @@ async def submit_action(job_id: int, action: ActionSubmit, session: SessionDepen
                             detail="Job not found")
     job.latest_update_implemented = False
 
-    return {
-        "action": "dummy_action"
-    }
+    for k, _ in job.config:
+        setattr(job.config, k, action.updates[k])
+
+    session.commit()
+    session.refresh(job)
+
+    return {"detail": "Action submitted"}

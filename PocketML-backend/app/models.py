@@ -83,7 +83,7 @@ class GetChangeResponse(BaseModel):
 
 class ActionSubmit(BaseModel):
     action: str
-    updates: str
+    updates: dict
 
 
 class CurrentJobUpdate(BaseModel):
