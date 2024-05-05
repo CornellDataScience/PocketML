@@ -10,7 +10,7 @@ import firebase_admin
 from firebase_admin import credentials, auth
 
 try:
-    cred = credentials.Certificate(settings.FIREBASE_SDK_JSON)
+    cred = credentials.Certificate(settings.FIREBASE_SDK_DICT)
     firebase_admin.initialize_app(cred)
     print("Firebase SDK initialized")
 except ValueError as e:

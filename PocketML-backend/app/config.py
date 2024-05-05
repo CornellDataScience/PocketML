@@ -53,6 +53,8 @@ def set_firebase_sdk(settings: Settings):
         data = json.load(json_file)
     data['private_key_id'] = settings.FIREBASE_PRIVATE_KEY_ID
     data['private_key'] = fix_private_key(settings.FIREBASE_PRIVATE_KEY)
+    # with open(settings.FIREBASE_SDK_JSON, 'w') as json_file:
+    #     json.dump(data, json_file)
     settings.FIREBASE_SDK_DICT = data
 
 
