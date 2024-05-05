@@ -11,9 +11,9 @@ COPY ../requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Bundle the app
-COPY . . 
+COPY . .
 
 # add current directory to python path
-ENV PYTHONPATH "${PYTHONPATH}:./"
+ENV PYTHONPATH ./app
 
 CMD ["uvicorn", "--port", "80", "--log-level", "trace", "app.main:app"]

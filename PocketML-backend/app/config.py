@@ -1,4 +1,5 @@
 from pydantic_settings import BaseSettings, SettingsConfigDict
+import json
 import os
 
 os.chdir(os.path.dirname(__file__)[:-4])
@@ -14,7 +15,11 @@ class Settings(BaseSettings):
     DATABASE_URL: str = "sqlite:///./app.db"
     CONNECT_ARGS: dict = {"check_same_thread": False}
     DEBUG: bool = True  # TODO: change to false for production
+
     FIREBASE_SDK_JSON: str = "./firebase-admin-sdk-for-pocketml.json"
+    FIREBASE_PRIVATE_KEY_ID: str = os.getenv('FIREBASE_PRIVATE_KEY_ID', "")
+    FIREBASE_PRIVATE_KEY: str = os.getenv('FIREBASE_PRIVATE_KEY', "")
+    FIREBASE_SDK_DICT: dict = {}
 
     DUMMY_USER_DANIEL: dict = {
         "name": "Daniel",
@@ -23,9 +28,6 @@ class Settings(BaseSettings):
         "email_notif": True
     }
 
-    AWS_ACCESS_KEY_ID: str
-    AWS_SECRET_ACCESS_KEY: str
-
     model_config = SettingsConfigDict(
         env_file=".env",
         extra="ignore",
@@ -33,4 +35,13 @@ class Settings(BaseSettings):
     )
 
 
+def set_firebase_sdk(settings: Settings):
+    with open(settings.FIREBASE_SDK_JSON, 'r') as json_file:
+        data = json.load(json_file)
+    data['private_key_id'] = settings.FIREBASE_PRIVATE_KEY_ID
+    data['private_key'] = settings.FIREBASE_PRIVATE_KEY
+    settings.FIREBASE_SDK_DICT = data
+
+
 settings = Settings()
+set_firebase_sdk(settings)
