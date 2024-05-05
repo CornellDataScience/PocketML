@@ -47,6 +47,8 @@ def set_firebase_sdk(settings: Settings):
         data = json.load(json_file)
     data['private_key_id'] = fix_string(settings.FIREBASE_PRIVATE_KEY_ID)
     data['private_key'] = fix_string(settings.FIREBASE_PRIVATE_KEY)
+    print(settings.FIREBASE_PRIVATE_KEY_ID, settings.FIREBASE_PRIVATE_KEY)
+    print(data)
     settings.FIREBASE_SDK_DICT = data
 
 
