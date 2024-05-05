@@ -10,25 +10,9 @@ async def get_jobs(session: SessionDependency, token: dict = UserTokenDependency
     """
     Get all jobs
     """
-    # user = session.query(User).filter(User.email == token["email"]).first()
-    # if user is None:
-    #     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
-    #                         detail="User for this task is not found. Please contact us.")
+    user = session.query(User).filter(User.email == token["email"]).first()
 
     all_jobs = {}
-
-    class Job:
-        id = '1'
-        name = "dummy_michael_job"
-        description = "dummy_michael_description"
-        total_steps = 10
-        current_step = 5
-        active = True
-
-    class User:
-        jobs = [Job()]
-
-    user = User()
 
     for job in user.jobs:
         all_jobs[job.id] = {

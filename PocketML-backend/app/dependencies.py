@@ -43,7 +43,12 @@ def get_user_token_dummy(request: Request):
     if "email" in list(request.headers.keys()):
         email = request.headers["email"]
         password = request.headers["password"]
+        # if user is None:
+        #     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+        #                         detail="User for this task is not found. Please contact us.")
+
     else:
+        print('WARNING: Using dummy user')
         email = settings.DUMMY_USER_DANIEL["email"]
         password = settings.DUMMY_USER_DANIEL['password']
     return {"email": email, "password": password}
