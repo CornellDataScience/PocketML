@@ -1,6 +1,7 @@
 from pydantic_settings import BaseSettings, SettingsConfigDict
 import json
 import os
+import re
 
 os.chdir(os.path.dirname(__file__)[:-4])
 
@@ -35,18 +36,21 @@ class Settings(BaseSettings):
     )
 
 
-def fix_string(s):
-    """Fixes strings which are transferred. String that contains new lines
-
-    """
-    return s.replace(r'\n', '\n').encode('ascii').decode('unicode_escape')
+def fix_private_key(sk: str):
+    """reintroduces newlines into a private key string"""
+    sk = sk.replace("-----BEGIN PRIVATE KEY-----", "")
+    sk = sk.replace("-----END PRIVATE KEY-----", "")
+    sk = re.sub("(.{64})", "\\1\n", sk, 0, re.DOTALL)
+    sk = "-----BEGIN PRIVATE KEY-----\n" + sk
+    sk = sk + "\n-----END PRIVATE KEY-----\n"
+    return sk
 
 
 def set_firebase_sdk(settings: Settings):
     with open(settings.FIREBASE_SDK_JSON, 'r') as json_file:
         data = json.load(json_file)
-    data['private_key_id'] = fix_string(settings.FIREBASE_PRIVATE_KEY_ID)
-    data['private_key'] = fix_string(settings.FIREBASE_PRIVATE_KEY)
+    data['private_key_id'] = settings.FIREBASE_PRIVATE_KEY_ID
+    data['private_key'] = fix_private_key(settings.FIREBASE_PRIVATE_KEY)
     settings.FIREBASE_SDK_DICT = data
 
 
