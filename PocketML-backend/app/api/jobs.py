@@ -183,8 +183,12 @@ async def submit_action(job_id: int, action: ActionSubmit, session: SessionDepen
                             detail="Job not found")
     job.latest_update_implemented = False
 
-    for k, _ in job.config:
-        setattr(job.config, k, action.updates[k])
+    config_json = json.loads(job.config)
+
+    for k, _ in config_json.items():
+        config_json[k] = action.updates[k]
+
+    job.config = json.dumps(config_json)
 
     session.commit()
     session.refresh(job)
