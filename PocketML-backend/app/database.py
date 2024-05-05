@@ -11,5 +11,3 @@ def create_db_and_tables():
     Handles the creation of the database and tables
     """
     SQLModel.metadata.create_all(engine)
-    
-

@@ -43,10 +43,11 @@ class Job(SQLModel, table=True):
     user_email: str = Field(foreign_key="user.email", nullable=False)
     user: User = Relationship(back_populates="jobs")
     active: bool = Field(default=False)
+    description: str = Field(default="empty description")
 
     wandb: bool = Field(nullable=False)
     wandb_link: str = Field(nullable=False)
-    start_time: str = Field(nullable=False)
+    start_time: int = Field(nullable=False)
     cluster_name: str = Field(nullable=False)
 
     config: str = Field(nullable=False)
@@ -83,13 +84,13 @@ class GetChangeResponse(BaseModel):
 
 class ActionSubmit(BaseModel):
     action: str
-    updates: str
+    updates: dict
 
 
 class CurrentJobUpdate(BaseModel):
     step: int
     status: str
-    update_time: str
+    update_time: int
 
 
 class CurrentJobUpdateResponse(BaseModel):

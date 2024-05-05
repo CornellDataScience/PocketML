@@ -22,22 +22,22 @@ def _create_user(*, session: Session, user_create: UserCreate) -> str:
 
     :return the firebase uid of the user
     """
-    try:
-        firebase_uid = auth.create_user(
-            email=user_create.email,
-            password=user_create.password,
-            display_name=user_create.name
-        ).uid
-    except FirebaseError:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
-                            detail="Could not create user in Firebase")
+    # try:
+    #     firebase_uid = auth.create_user(
+    #         email=user_create.email,
+    #         password=user_create.password,
+    #         display_name=user_create.name
+    #     ).uid
+    # except FirebaseError:
+    #     raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
+    #                         detail="Could not create user in Firebase")
 
     new_user = User(
         email=user_create.email,
         name=user_create.name,
         email_notif=user_create.email_notif,
         password=user_create.password,  # TODO remove this
-        firebase_uid=firebase_uid,
+        firebase_uid="firebase_uid",
         is_active=True,
         is_superuser=False
     )
@@ -46,7 +46,7 @@ def _create_user(*, session: Session, user_create: UserCreate) -> str:
     session.commit()
     session.refresh(new_user)
 
-    return firebase_uid
+    return new_user.firebase_uid
 
 
 def _login_user(*, session: Session, user_login: UserLogin) -> str:
