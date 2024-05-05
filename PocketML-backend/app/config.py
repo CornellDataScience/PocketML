@@ -18,8 +18,9 @@ class Settings(BaseSettings):
     DEBUG: bool = True  # TODO: change to false for production
 
     FIREBASE_SDK_JSON: str = "./firebase-admin-sdk-for-pocketml.json"
-    FIREBASE_PRIVATE_KEY_ID: str = os.getenv('FIREBASE_PRIVATE_KEY_ID', "")
-    FIREBASE_PRIVATE_KEY: str = os.getenv('FIREBASE_PRIVATE_KEY', "")
+    FIREBASE_PRIVATE_KEY_ID: str = str(
+        os.getenv('FIREBASE_PRIVATE_KEY_ID', ""))
+    FIREBASE_PRIVATE_KEY: str = str(os.getenv('FIREBASE_PRIVATE_KEY', ""))
     FIREBASE_SDK_DICT: dict = {}
 
     DUMMY_USER_DANIEL: dict = {

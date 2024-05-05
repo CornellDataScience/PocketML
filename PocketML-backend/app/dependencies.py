@@ -9,8 +9,12 @@ from config import settings
 import firebase_admin
 from firebase_admin import credentials, auth
 
-cred = credentials.Certificate(settings.FIREBASE_SDK_JSON)
-firebase_admin.initialize_app(cred)
+try:
+    cred = credentials.Certificate(settings.FIREBASE_SDK_JSON)
+    firebase_admin.initialize_app(cred)
+    print("Firebase SDK initialized")
+except ValueError as e:
+    print("Error initializing Firebase SDK:", e)
 
 
 def get_db_session():
@@ -24,19 +28,24 @@ SessionDependency = Annotated[Session, Depends(get_db_session)]
 def get_user_token(request: Request):
     token = request.headers.get("Authorization")
     if not token:
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Can not find the authorization token.")
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,
+                            detail="Can not find the authorization token.")
 
     try:
         decoded_token = auth.verify_id_token(token)
         return decoded_token
     except ExpiredIdTokenError:
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Token has expired.")
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="Token has expired.")
     except RevokedIdTokenError:
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Token has been revoked.")
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="Token has been revoked.")
     except CertificateFetchError:
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Could not fetch the certificate.")
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,
+                            detail="Could not fetch the certificate.")
     except UserDisabledError:
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="User has been disabled.")
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="User has been disabled.")
 
 
 def get_user_token_dummy(request: Request):
