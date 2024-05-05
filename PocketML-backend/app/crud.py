@@ -46,7 +46,7 @@ def _create_user(*, session: Session, user_create: UserCreate) -> str:
     session.commit()
     session.refresh(new_user)
 
-    return firebase_uid
+    return new_user.firebase_uid
 
 
 def _login_user(*, session: Session, user_login: UserLogin) -> str:

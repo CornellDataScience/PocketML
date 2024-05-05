@@ -17,7 +17,7 @@ async def get_jobs(session: SessionDependency, token: dict = UserTokenDependency
     for job in user.jobs:
         all_jobs[job.id] = {
             "name": job.name,
-            "description": job.description,
+            "description": "job.description",
             # "start_time": job.start_time,
             "total_steps": job.total_steps,
             "current_step": job.current_step,
@@ -68,22 +68,8 @@ async def create_job(new_job: JobCreate, session: SessionDependency, token: dict
     return {"detail": job.id}
 
 
-@router.get("/working/{job_id}", status_code=status.HTTP_200_OK, dependencies=[], response_model=Job,
-            response_model_exclude={'latest_update_implemented', 'last_update_time', 'current_status'})
-async def get_job_(job_id: int, session: SessionDependency, token: dict = UserTokenDependency):
-    """
-    retrieve a job by its id
-    """
-    # Check for authentication
-    job = session.query(Job).filter(Job.id == job_id).first()
-    if job is None:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
-                            detail="Job not found")
-    return job
-
-
 @router.get("/{job_id}", status_code=status.HTTP_200_OK, dependencies=[], response_model=Job,
-            response_model_exclude={'config'})
+            response_model_exclude={'latest_update_implemented', 'last_update_time', 'current_status'})
 async def get_job(job_id: int, session: SessionDependency, token: dict = UserTokenDependency):
     """
     retrieve a job by its id
@@ -93,22 +79,43 @@ async def get_job(job_id: int, session: SessionDependency, token: dict = UserTok
     if job is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                             detail="Job not found")
-    # return job
-    return Job(
-        name="test name",
-        active=True,
-        description="test description",
-        hyperparameters={
-            "lr": "0.1",
-            "hyp1": "val1",
-            "hyp2": "val2"
-        },
-        wandb={
-            "in_use": False,
-            "link": "https://www.notion.so/zhongxuanwang/PocketML-Back-end-API-Spec-Sheet-0ab3416be95a4cf9a6f015e3bf6fb0db"
-        },
-        start_time="sdklf"
-    )
+    config_dict_str = json.loads(job.config)
+
+    for k, v in config_dict_str.items():
+        config_dict_str[k] = str(v)
+
+    job.config = config_dict_str
+    
+    return job
+
+
+# @router.get("/{job_id}", status_code=status.HTTP_200_OK, dependencies=[], response_model=Job,
+#             response_model_exclude={'config'})
+# async def get_job(job_id: int, session: SessionDependency, token: dict = UserTokenDependency):
+#     """
+#     retrieve a job by its id
+#     """
+#     # Check for authentication
+#     job = session.query(Job).filter(Job.id == job_id).first()
+#     if job is None:
+#         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+#                             detail="Job not found")
+#     # return job
+#     return Job(
+#         name="test name",
+#         active=True,
+#         description="test description",
+#         hyperparameters={
+#             "lr": "0.1",
+#             "hyp1": "val1",
+#             "hyp2": "val2"
+#         },
+#         wandb={
+#             "in_use": False,
+#             "link": "https://www.notion.so/zhongxuanwang/PocketML-Back-end-API-Spec-Sheet-0ab3416be95a4cf9a6f015e3bf6fb0db"
+#         },
+#         start_time="sdklf"
+#     )
 
 
 @router.put("/{job_id}", status_code=status.HTTP_200_OK, dependencies=[], response_model=Job,
