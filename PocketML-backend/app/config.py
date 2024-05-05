@@ -39,7 +39,7 @@ def fix_string(s):
     """Fixes strings which are transferred. String that contains new lines
 
     """
-    return s.replace('\\n', '\n').encode('utf-8')
+    return s.replace(r'\n', '\n')
 
 
 def set_firebase_sdk(settings: Settings):
