@@ -1,6 +1,12 @@
 # Use python 3.9 runtime as base image
 FROM python:3.9
 
+ARG FIREBASE_PRIVATE_KEY_ID
+ARG FIREBASE_PRIVATE_KEY
+
+ENV FIREBASE_PRIVATE_KEY_ID=$FIREBASE_PRIVATE_KEY_ID
+ENV FIREBASE_PRIVATE_KEY=$FIREBASE_PRIVATE_KEY
+
 # Set the working directory in the container to the app folder
 WORKDIR /app
 
