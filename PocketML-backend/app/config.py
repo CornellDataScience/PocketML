@@ -39,7 +39,7 @@ def fix_string(s):
     """Fixes strings which are transferred. String that contains new lines
 
     """
-    return s.replace('\\n', '\n')
+    return s.replace('\\n', '\n').encode('utf-8')
 
 
 def set_firebase_sdk(settings: Settings):
@@ -48,7 +48,6 @@ def set_firebase_sdk(settings: Settings):
     data['private_key_id'] = fix_string(settings.FIREBASE_PRIVATE_KEY_ID)
     data['private_key'] = fix_string(settings.FIREBASE_PRIVATE_KEY)
     settings.FIREBASE_SDK_DICT = data
-    print(type(data['private_key']))
 
 
 settings = Settings()
