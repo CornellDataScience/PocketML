@@ -11,25 +11,30 @@ struct JobDetailsView: View {
     @State private var isActive = true
     @StateObject private var viewModel = JobInfoViewModel()
     
-    var selectedJob : Job
+    var selectedJob : JobInfo
+    var selectedJobId : String
     
     var body: some View {
         VStack{
             ScrollView{
                 VStack(spacing:20){
                     
-                    JobTitle(selectedJob.jobTitle)
+                    JobTitle(selectedJob.name)
 //                    Text("Status")
 //                        .font(.title)
 //                        .padding(.bottom, -20)
 //                        .monospaced()
 //                        .foregroundStyle(Color.main)
                     StatusDisplay(viewModel)
-                        
-                       
+                        .onAppear(){
+                            viewModel.fetchData(url: "http://10.48.85.83:8000/api/v1/jobs/" + selectedJobId)
+                        }
                         
 //                        ScriptWidget("<Script Title>")
                     WandbWidget(viewModel)
+                        .onAppear(){
+                            viewModel.fetchData(url: "http://10.48.85.83:8000/api/v1/jobs/" + selectedJobId)
+                        }
                    HyperparamConfig(viewModel)
                     // temporary points for graph
                     // will have to make a binding or attribute of a job
@@ -51,17 +56,17 @@ struct JobDetailsView: View {
 func JobTitle(_ text:String) -> some View {
     Text(text)
         .foregroundStyle(Color.background2)
-        .padding(EdgeInsets(top:10,leading:100, bottom:10, trailing: 100 ))
+//        .padding(EdgeInsets(top:10,leading:100, bottom:10, trailing: 100 ))
         .background(Color.main)
         .clipShape(RoundedRectangle(cornerRadius: 30))
         .padding(.top, 10)
         .monospaced()
-        .font(.largeTitle)
+        .font(.title)
 }
 
 
 func StatusDisplay(_ viewModel: JobInfoViewModel) -> some View {
-    var active = viewModel.jobDetails?.active ?? true
+    let active = viewModel.jobDetails?.active ?? true
     
     return HStack{
         
@@ -235,8 +240,8 @@ func HyperparamConfig(_ viewModel: JobInfoViewModel) -> some View {
         }
         .background(Color.background2)
     }
-    
-    #Preview {
-        JobDetailsView(selectedJob: Job(jobTitle: "Job 1", completedEpochs: 1.25, totalEpochs: 5.0, jobID: "", isActive: true))
-    }
+//    
+//    #Preview {
+//        JobDetailsView(selectedJob: Job(jobTitle: "Job 1", completedEpochs: 1.25, totalEpochs: 5.0, jobID: "", isActive: true))
+//    }
 
