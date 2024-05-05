@@ -35,13 +35,19 @@ class Settings(BaseSettings):
     )
 
 
+def fix_string(s):
+    """Fixes strings which are transferred. String that contains new lines
+
+    """
+    return s.replace('\\n', '\n')
+
+
 def set_firebase_sdk(settings: Settings):
     with open(settings.FIREBASE_SDK_JSON, 'r') as json_file:
         data = json.load(json_file)
-    data['private_key_id'] = settings.FIREBASE_PRIVATE_KEY_ID
-    data['private_key'] = settings.FIREBASE_PRIVATE_KEY
+    data['private_key_id'] = fix_string(settings.FIREBASE_PRIVATE_KEY_ID)
+    data['private_key'] = fix_string(settings.FIREBASE_PRIVATE_KEY)
     settings.FIREBASE_SDK_DICT = data
-    print(settings.FIREBASE_SDK_DICT)
 
 
 settings = Settings()
