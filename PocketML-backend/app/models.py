@@ -89,7 +89,7 @@ class ActionSubmit(BaseModel):
 class CurrentJobUpdate(BaseModel):
     step: int
     status: str
-    update_time: str
+    update_time: int
 
 
 class CurrentJobUpdateResponse(BaseModel):

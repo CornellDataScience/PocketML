@@ -38,9 +38,9 @@ async def create_job(new_job: JobCreate, session: SessionDependency, token: dict
     """
     Creates a new job by adding them to 
     """
-    if session.query(Job).filter(Job.name == new_job.name).first() is not None:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST, detail="Job already exists")
+    # if session.query(Job).filter(Job.name == new_job.name).first() is not None:
+    #     raise HTTPException(
+    #         status_code=status.HTTP_400_BAD_REQUEST, detail="Job already exists")
 
     job = Job(
         name=new_job.name,
@@ -68,6 +68,20 @@ async def create_job(new_job: JobCreate, session: SessionDependency, token: dict
     return {"detail": job.id}
 
 
+@router.get("/working/{job_id}", status_code=status.HTTP_200_OK, dependencies=[], response_model=Job,
+            response_model_exclude={'latest_update_implemented', 'last_update_time', 'current_status'})
+async def get_job_(job_id: int, session: SessionDependency, token: dict = UserTokenDependency):
+    """
+    retrieve a job by its id
+    """
+    # Check for authentication
+    job = session.query(Job).filter(Job.id == job_id).first()
+    if job is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail="Job not found")
+    return job
+
+
 @router.get("/{job_id}", status_code=status.HTTP_200_OK, dependencies=[], response_model=Job,
             response_model_exclude={'config'})
 async def get_job(job_id: int, session: SessionDependency, token: dict = UserTokenDependency):
@@ -81,17 +95,19 @@ async def get_job(job_id: int, session: SessionDependency, token: dict = UserTok
                             detail="Job not found")
     # return job
     return Job(
-        name="dummy_michael_job",
-        user_email="dummy_michael_email",
-
-        wandb="dummywandb",
-        wandb_link="dummywandblink",
-        start_time="new_job.start_time",
-        config="json.dumps(new_job.config)",
-        cluster_name="new_job.cluster_name",
-        current_step=0,
-        current_status="stopped",
-        last_update_time="undefined"
+        name="test name",
+        active=True,
+        description="test description",
+        hyperparameters={
+            "lr": "0.1",
+            "hyp1": "val1",
+            "hyp2": "val2"
+        },
+        wandb={
+            "in_use": False,
+            "link": "https://www.notion.so/zhongxuanwang/PocketML-Back-end-API-Spec-Sheet-0ab3416be95a4cf9a6f015e3bf6fb0db"
+        },
+        start_time="sdklf"
     )
 
 
@@ -166,3 +182,22 @@ async def submit_action(job_id: int, action: ActionSubmit, session: SessionDepen
     session.refresh(job)
 
     return {"detail": "Action submitted"}
+
+
+@router.post("/{job_id}/update", status_code=status.HTTP_201_CREATED, response_model=CurrentJobUpdateResponse)
+async def update_job(job_id: int, job_update: CurrentJobUpdate, session: SessionDependency,
+                     token: dict = UserTokenDependency):
+    """
+    Update the job with the given name
+    """
+    job = session.query(Job).filter(Job.id == job_id).first()
+    if not job:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail="Internal error: could not find the job in the database")
+
+    job.current_step = job_update.step
+    job.current_status = job_update.status
+    job.last_update_time = job_update.update_time
+    session.commit()
+
+    return {"action": "start"}
