@@ -13,4 +13,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Bundle the app
 COPY . . 
 
-CMD ["uvicorn", "--port", "80", "--log-level", "trace", "main:app"]
+CMD ["uvicorn", "--port", "80", "--log-level", "trace", "app.main:app"]
