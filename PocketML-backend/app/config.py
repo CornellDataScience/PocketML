@@ -43,6 +43,7 @@ def fix_private_key(sk: str):
     sk = re.sub("(.{64})", "\\1\n", sk, 0, re.DOTALL)
     sk = "-----BEGIN PRIVATE KEY-----\n" + sk
     sk = sk + "\n-----END PRIVATE KEY-----\n"
+    print("new key", sk)
     return sk
 
 
