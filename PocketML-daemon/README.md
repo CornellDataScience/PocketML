@@ -1,2 +1,1 @@
-# PocketML Daemon Class Code
-
+# PocketML
