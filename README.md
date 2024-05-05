@@ -1,2 +1,8 @@
-# PocketML-full-stack
-Backend and frontend related code for PocketML
+# PocketML
+
+Everything for PocketML including
+
+- Frontend
+- Backend
+- Daemon Class
+
