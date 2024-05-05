@@ -1,0 +1,6 @@
+version: '3'
+services:
+  pocketml-backend:
+    build:
+      context: ./PocketML-Backend
+      dockerfile: ./PocketML-Backend/Dockerfile

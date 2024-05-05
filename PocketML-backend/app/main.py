@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi import APIRouter
 from fastapi.routing import APIRoute
+from starlette.middleware.cors import CORSMiddleware
 
 from api import users, jobs
 from config import settings
@@ -13,7 +14,16 @@ api_router.include_router(jobs.router, prefix="/jobs", tags=["jobs"])
 
 app = FastAPI(
     title=settings.PROJECT_NAME,
-    openapi_url=f"{settings.API_V1_STR}/openapi.json",
+    # openapi_url=f"{settings.API_V1_STR}/openapi.json",
+    # base_path=settings.API_V1_STR,
+)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # List of allowed origins
+    allow_credentials=True,
+    allow_methods=["*"],  # Allow all methods
+    allow_headers=["*"],  # Allow all headers
 )
 
 app.include_router(api_router, prefix=settings.API_V1_STR, tags=["root"])

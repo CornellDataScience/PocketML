@@ -43,13 +43,18 @@ def get_user_token_dummy(request: Request):
     if "email" in list(request.headers.keys()):
         email = request.headers["email"]
         password = request.headers["password"]
+        # if user is None:
+        #     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+        #                         detail="User for this task is not found. Please contact us.")
+
     else:
+        print('WARNING: Using dummy user')
         email = settings.DUMMY_USER_DANIEL["email"]
         password = settings.DUMMY_USER_DANIEL['password']
     return {"email": email, "password": password}
 
 
 # # TODO: Implement the get_user_token function
-# UserTokenDependency = Annotated[dict, Depends(get_user_token)]
+# UserTokenDependency = Depends(get_user_token)
 # TODO: add Annotated makes it doesn't work (sth concerns with the generic class)
 UserTokenDependency = Depends(get_user_token_dummy)

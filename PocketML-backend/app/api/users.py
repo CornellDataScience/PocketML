@@ -22,9 +22,9 @@ async def create_user(new_user: UserCreate, session: SessionDependency):
 
     firebase_uid = _create_user(session=session, user_create=new_user)
 
-    token = auth.create_custom_token(firebase_uid)
+    # token = auth.create_custom_token(firebase_uid)
 
-    return {"token": token}
+    return {"token": firebase_uid}
 
 
 @router.post("/login", status_code=status.HTTP_200_OK)
