@@ -61,17 +61,17 @@ private func PrimitiveJobRow(job : PrimitiveJob) -> some View {
             let compEpoch = String(format: "%.2f", Float(job.current_step))
             let totEpoch = String(format: "%.2f", Float(job.total_steps))
             let percent = String(format: "%.1f", (Float(job.current_step) * 100 / Float(job.total_steps)))
-            ProgressView(value:  Float(job.current_step), total: Float(job.total_steps)){
-                HStack{
-                    Text("\(compEpoch) epochs \\ \(totEpoch)")
-                        .modifier(SubheadlineModifier())
-                    Spacer()
-                    Text("\(percent)%")
-                        .modifier(SubheadlineModifier())
-                        .bold()
-                }
-            }
-            .accentColor(Color.main)
+//            ProgressView(value:  Float(job.current_step), total: Float(job.total_steps)){
+//                HStack{
+//                    Text("\(compEpoch) epochs \\ \(totEpoch)")
+//                        .modifier(SubheadlineModifier())
+//                    Spacer()
+//                    Text("\(percent)%")
+//                        .modifier(SubheadlineModifier())
+//                        .bold()
+//                }
+//            }
+//            .accentColor(Color.main)
         }
     }
 }

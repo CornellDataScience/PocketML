@@ -17,11 +17,12 @@ struct ContentView: View {
             }label:{
                 
                 VStack {
-                    Image("TunerLogo")
+                    Image("PocketLogo")
                     .padding(.bottom, 100)
                     Text("Powered by \n Cornell Data Science")
                         .offset(y:225) // Adjust the offset as needed
                         .padding()
+                        .padding(.bottom, 100)
                         .foregroundStyle(Color.main)
                         .monospaced()
                         .multilineTextAlignment(.center)

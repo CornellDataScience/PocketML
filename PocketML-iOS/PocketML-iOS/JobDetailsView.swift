@@ -117,18 +117,20 @@ func WandbWidget(_ job: ComplexJob) -> some View {
 }
 
 func ConfigRow(_ key: String, _ value: String) -> some View{
-    // TODO: Add modifiers for color + font
-    HStack{
-        Text(key + ": ")
+    HStack(alignment : .center){
+        Text(key + ":")
+            .modifier(TextModifier())
         TextField("", text: .constant(value))
+            .modifier(TextModifier())
     }
+    .padding(.leading, 75)
 }
 
 func Config(_ job: ComplexJob) -> some View {
     // var output = ""
     let config = job.config
     
-    return VStack{
+    return VStack(alignment : .center){
         Text("Model Parameters")
             .modifier(Title2Modifier())
             .bold()
@@ -136,6 +138,10 @@ func Config(_ job: ComplexJob) -> some View {
             ConfigRow(key, value)
         }
     }
+    .background(RoundedRectangle(cornerRadius: 10.0)
+    .fill(Color.background2))
+    .padding(.leading)
+    .padding(.trailing)
 }
     
     
