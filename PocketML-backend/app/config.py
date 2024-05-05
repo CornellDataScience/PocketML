@@ -1,5 +1,7 @@
 from pydantic_settings import BaseSettings, SettingsConfigDict
+import json
 import os
+import re
 
 os.chdir(os.path.dirname(__file__)[:-4])
 
@@ -14,7 +16,12 @@ class Settings(BaseSettings):
     DATABASE_URL: str = "sqlite:///./app.db"
     CONNECT_ARGS: dict = {"check_same_thread": False}
     DEBUG: bool = True  # TODO: change to false for production
+
     FIREBASE_SDK_JSON: str = "./firebase-admin-sdk-for-pocketml.json"
+    FIREBASE_PRIVATE_KEY_ID: str = str(
+        os.getenv('FIREBASE_PRIVATE_KEY_ID', ""))
+    FIREBASE_PRIVATE_KEY: str = str(os.getenv('FIREBASE_PRIVATE_KEY', ""))
+    FIREBASE_SDK_DICT: dict = {}
 
     DUMMY_USER_DANIEL: dict = {
         "name": "Daniel",
@@ -23,9 +30,6 @@ class Settings(BaseSettings):
         "email_notif": True
     }
 
-    AWS_ACCESS_KEY_ID: str
-    AWS_SECRET_ACCESS_KEY: str
-
     model_config = SettingsConfigDict(
         env_file=".env",
         extra="ignore",
@@ -33,4 +37,26 @@ class Settings(BaseSettings):
     )
 
 
+def fix_private_key(sk: str):
+    """reintroduces newlines into a private key string"""
+    sk = sk.replace("-----BEGIN PRIVATE KEY-----", "")
+    sk = sk.replace("-----END PRIVATE KEY-----", "")
+    sk = re.sub("(.{64})", "\\1\n", sk, 0, re.DOTALL)
+    sk = "-----BEGIN PRIVATE KEY-----\n" + sk
+    sk = sk + "\n-----END PRIVATE KEY-----\n"
+    print("new key", sk)
+    return sk
+
+
+def set_firebase_sdk(settings: Settings):
+    with open(settings.FIREBASE_SDK_JSON, 'r') as json_file:
+        data = json.load(json_file)
+    data['private_key_id'] = settings.FIREBASE_PRIVATE_KEY_ID
+    data['private_key'] = fix_private_key(settings.FIREBASE_PRIVATE_KEY)
+    # with open(settings.FIREBASE_SDK_JSON, 'w') as json_file:
+    #     json.dump(data, json_file)
+    settings.FIREBASE_SDK_DICT = data
+
+
 settings = Settings()
+set_firebase_sdk(settings)

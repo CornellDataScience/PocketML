@@ -1,3 +1,4 @@
+from motor.motor_asyncio import AsyncIOMotorClient
 from fastapi import FastAPI
 from fastapi import APIRouter
 from fastapi.routing import APIRoute
@@ -33,8 +34,6 @@ app.include_router(api_router, prefix=settings.API_V1_STR, tags=["root"])
 async def index():
     return {"message": "Welcome to PocketML"}
 
-
-from motor.motor_asyncio import AsyncIOMotorClient
 
 client = AsyncIOMotorClient("mongodb://localhost:27010")
 db = client.your_database_name
