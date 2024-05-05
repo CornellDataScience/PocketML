@@ -7,11 +7,13 @@ WORKDIR /app
 # Copy requirements file
 COPY ../requirements.txt ./
 
-# Bundle the app
-COPY . .
-
 # Download packages/dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Run main
-CMD ["uvicorn", "app.main:app", "--host 0.0.0.0", "--port 8000"]
+# Bundle the app
+COPY . . 
+
+# add current directory to python path
+ENV PYTHONPATH "${PYTHONPATH}:./"
+
+CMD ["uvicorn", "--port", "80", "--log-level", "trace", "app.main:app"]
