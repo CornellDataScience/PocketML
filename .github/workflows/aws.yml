@@ -69,14 +69,14 @@ jobs:
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         IMAGE_TAG: ${{ github.sha }}
-        FIREBASE_SECRET_KEY_ID: ${{ secrets.FIREBASE_SECRET_KEY_ID }}
-        FIREBASE_SECRET_KEY: ${{ secrets.FIREBASE_SECRET_KEY }}
+        FIREBASE_PRIVATE_KEY_ID: ${{ secrets.FIREBASE_PRIVATE_KEY_ID }}
+        FIREBASE_PRIVATE_KEY: ${{ secrets.FIREBASE_PRIVATE_KEY }}
       run: |
         # Build a docker container and
         # push it to ECR so that it can
         # be deployed to ECS.
-        docker build --build-arg FIREBASE_SECRET_KEY_ID="$FIREBASE_SECRET_KEY_ID" \ 
-                      --build-arg FIREBASE_SECRET_KEY="$FIREBASE_SECRET_KEY" \
+        docker build --build-arg FIREBASE_PRIVATE_KEY_ID="$FIREBASE_PRIVATE_KEY_ID" \ 
+                      --build-arg FIREBASE_PRIVATE_KEY="$FIREBASE_PRIVATE_KEY" \
                       -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG ./PocketML-backend
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
         echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
