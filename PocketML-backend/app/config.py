@@ -48,6 +48,7 @@ def set_firebase_sdk(settings: Settings):
     data['private_key_id'] = fix_string(settings.FIREBASE_PRIVATE_KEY_ID)
     data['private_key'] = fix_string(settings.FIREBASE_PRIVATE_KEY)
     settings.FIREBASE_SDK_DICT = data
+    print(data)
 
 
 settings = Settings()
