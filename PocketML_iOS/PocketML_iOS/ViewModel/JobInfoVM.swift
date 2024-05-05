@@ -8,13 +8,13 @@
 import SwiftUI
 import Combine
 
-struct Hyperparameters: Codable {
-    let name: String
-    let newValue: String
-}
+
+//struct Hyperparameters: Codable {
+//    let name: String
+//}
 
 struct WandbInfo: Codable {
-    let inUse: Bool
+    let in_use: Bool
     let link: String
 }
 
@@ -24,14 +24,14 @@ struct JobDetails: Codable {
     let description: String
     let hyperparameters: [String: String] // Dictionary of hyperparameters
     let wandb: WandbInfo
-    let startTime: String // Assuming it's a string in datetime format
+    let start_time: String // Assuming it's a string in datetime format
 }
 
 class JobInfoViewModel: ObservableObject {
     @Published var jobDetails: JobDetails?
     
     // call this function on ../api/v1/jobs/<job_id>
-    func fetchData(from url: String) {
+    func fetchData(url: String) {
         guard let apiUrl = URL(string: url) else {
             print("Invalid URL: \(url)")
             return
@@ -45,6 +45,7 @@ class JobInfoViewModel: ObservableObject {
                     let decodedData = try JSONDecoder().decode(JobDetails.self, from: data)
                     DispatchQueue.main.async {
                         self.jobDetails = decodedData
+                        print("Success - Job Info!")
                     }
                 } catch {
                     print("Error decoding JSON: \(error.localizedDescription)")

@@ -11,23 +11,8 @@ struct JobDashboardView: View {
 //    @State private var isPopoverPresented = false
 //    @State private var clusterData = ClusterData(name: "", port: "", publicKey: "")
     @StateObject private var viewModel = JobsViewModel()
-    @State private var currentJobs: [Job] = []
-    @State private var pastJobs: [Job] = []
-    
-    // Function to populate current vs past jobs from endpoint response
-    func classifyJobs(allJobs: [String: Jobs]){
-        
-        for (jobId, job) in allJobs{
-            
-            let j = Job(jobTitle: job.name, completedEpochs: 1.0, totalEpochs: 5.0, jobID: jobId, isActive: job.active )
-            
-            if job.active{
-                currentJobs.append(j)
-            } else {
-                pastJobs.append(j)
-            }
-        }
-    }
+//    @State private var currentJobs: [JobInfo] = []
+//    @State private var pastJobs: [JobInfo] = []
     
 
     var body: some View {
@@ -36,18 +21,22 @@ struct JobDashboardView: View {
                 Text("Your Projects")
                     .modifier(MainTitleModifier())
                 Spacer()
-                JobListSection("Current Projects", jobs: currentJobs)
-                JobListSection("Past Projects", jobs: pastJobs)
+                
+                JobListSection("Current Projects", jobs: viewModel.currentJobs)
+                    .onAppear(){
+                        // get API data when the page appears and run classification function
+                        viewModel.fetchData(url: "http://10.48.85.83:8000/api/v1/jobs")
+                    }
+                JobListSection("Past Projects", jobs: viewModel.pastJobs)
+                    .onAppear(){
+                        // get API data when the page appears and run classification function
+                        viewModel.fetchData(url: "http://10.48.85.83:8000/api/v1/jobs")
+                    }
                 Divider().background(Color.background)
             
             }
             .modifier(MainVStackModifier())
-        }.onAppear(){
-            // get API data when the page appears and run classification function
-            viewModel.fetchData(url:"") // TODO: add actual url route to /jobs endpoint
-            let allJobs = viewModel.jobs
-            // expect that currentJobs and pastJobs will contain the correct objects when displaying on JobListSection
-            classifyJobs(allJobs: allJobs)
+            
         }
     }
 }
@@ -56,8 +45,8 @@ struct JobDashboardView: View {
 
 
 
-func JobListSection(_ sectionTitle: String, jobs: [Job]) -> some View {
-    VStack{
+func JobListSection(_ sectionTitle: String, jobs: [String: JobInfo]) -> some View {
+    return VStack{
         Section() {
             VStack{
                 JobSectionTitle(sectionTitle)
@@ -75,16 +64,16 @@ func JobSectionTitle(_ text: String) -> some View {
         .padding(.bottom,-40)
 }
 
-private func JobInfoRow(job : Job) -> some View {
+private func JobInfoRow(job : JobInfo) -> some View {
     HStack{
         VStack(alignment:.leading){
-            Text(job.jobTitle)
+            Text(job.name)
                 .modifier(Title3Modifier())
             
-            let compEpoch = String(format: "%.2f", job.completedEpochs)
-            let totEpoch = String(format: "%.2f", job.totalEpochs)
-            let percent = String(format: "%.1f", (job.completedEpochs * 100 / job.totalEpochs))
-            ProgressView(value: job.completedEpochs, total: job.totalEpochs){
+            let compEpoch = String(format: "%.2f", Float(job.current_step))
+            let totEpoch = String(format: "%.2f", Float(job.total_steps))
+            let percent = String(format: "%.1f", (Float(job.current_step) * 100 / Float(job.total_steps)))
+            ProgressView(value:  Float(job.current_step), total: Float(job.total_steps)){
                 HStack{
                     Text("\(compEpoch) epochs \\ \(totEpoch)")
                         .modifier(SubheadlineModifier())
@@ -99,22 +88,32 @@ private func JobInfoRow(job : Job) -> some View {
     }
 }
 
-private func JobsList(jobsList : [Job]) -> some View {
+private func JobsList(jobsList : [String: JobInfo]) -> some View {
     List
     {
-        ForEach(jobsList) {
-            job in
+        ForEach(jobsList.sorted(by: { $0.key < $1.key }), id: \.key) { key, jobInfo in
             NavigationLink {
-                JobDetailsView(selectedJob: job)
+                JobDetailsView(selectedJob: jobInfo, selectedJobId: key)
             } label: {
-                JobInfoRow(job:job)
+                JobInfoRow(job:jobInfo)
             }
+            
+        }
+        
+        
+//        ForEach(jobsList, id: \.self) {
+//            job in
+//            NavigationLink {
+//                JobDetailsView(selectedJob: job, selectedJobId: allJobs.someKey(forValue: job)
+//            } label: {
+//                JobInfoRow(job:job)
+//            }
         }
         .listRowBackground(Color.background)
         .scrollContentBackground(.hidden)
         
     }
-}
+
 
 #Preview {
     JobDashboardView()
