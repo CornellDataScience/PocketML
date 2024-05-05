@@ -45,10 +45,10 @@ def fix_string(s):
 def set_firebase_sdk(settings: Settings):
     with open(settings.FIREBASE_SDK_JSON, 'r') as json_file:
         data = json.load(json_file)
-    data['private_key_id'] = fix_string(settings.FIREBASE_PRIVATE_KEY_ID)
-    data['private_key'] = fix_string(settings.FIREBASE_PRIVATE_KEY)
+    # data['private_key_id'] = fix_string(settings.FIREBASE_PRIVATE_KEY_ID)
+    # data['private_key'] = fix_string(settings.FIREBASE_PRIVATE_KEY)
     settings.FIREBASE_SDK_DICT = data
-    print(data)
+    print(type(data['private_key']))
 
 
 settings = Settings()
