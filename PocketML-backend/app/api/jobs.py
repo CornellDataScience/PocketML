@@ -85,7 +85,8 @@ async def get_job(job_id: int, session: SessionDependency, token: dict = UserTok
         config_dict_str[k] = str(v)
 
     job.config = config_dict_str
-    
+    job.wandb_link = "https://google.com/"
+
     return job
 
 
@@ -170,7 +171,7 @@ async def get_change(job_id: int, session: SessionDependency, token: dict = User
     }
 
 
-@router.post('<job_id>/submit_action', status_code=status.HTTP_201_CREATED)
+@router.post('/<job_id>/submit_action', status_code=status.HTTP_201_CREATED)
 async def submit_action(job_id: int, action: ActionSubmit, session: SessionDependency,
                         token: dict = UserTokenDependency):
     """
