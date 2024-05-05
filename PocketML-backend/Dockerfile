@@ -13,5 +13,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Bundle the app
 COPY . .
 
-# Run main
-CMD ["uvicorn", "--port", "80", "--log-level", "trace", "app.main:app"]
+# Set the working directory in the container to the app folder
+WORKDIR /app
+
+CMD ["uvicorn", "--port", "80", "--log-level", "trace", "main:app"]
